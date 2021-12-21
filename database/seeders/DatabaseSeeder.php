@@ -18,7 +18,9 @@ class DatabaseSeeder extends Seeder
         Artisan::call('app:PopulateDateDimensionsTableCommand');
 
         $this->call([
-            UserSeeder::class
+            UserSeeder::class,
+            CountrySeeder::class,
+            CurrencySeeder::class,
         ]);
     }
 }
