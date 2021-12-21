@@ -1,2 +1,5 @@
-*
+!factory
+!ui
+!factory/**
+!ui/**
 !.gitignore
