@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             CompanyDataSeeder::class,
             CompanyTargetDataSeeder::class,
             CompanySettingsSeeder::class,
+            PeccSeeder::class,
         ]);
     }
 }
