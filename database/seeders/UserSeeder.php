@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Contact;
 use App\Models\User;
 use App\Models\UserData;
 use Illuminate\Support\Str;
@@ -20,6 +21,7 @@ class UserSeeder extends Seeder
     {
         User::factory(1)
         ->has(UserData::factory())
+        ->has(Contact::factory(5))
         ->state([
             'id' => 1,
             'name' => env('OWNER_NAME'),
