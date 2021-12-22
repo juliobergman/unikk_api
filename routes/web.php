@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TokenController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +22,15 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('welcome');
 })->name('login')->middleware('guest');
+// token
+Route::prefix('token')->group(function () {
+    Route::middleware('auth:sanctum')->post('/create', [TokenController::class, 'create']);
+    Route::middleware('auth:sanctum')->post('/list', [TokenController::class, 'list']);
+});
 
 
 
-// Authenticated
-Route::get('/authenticated', function () {
-    return view('logged');
-})->name('authenticated')->middleware('auth');
+// home
+Route::get('/home', function () {
+    return view('home');
+})->name('home')->middleware('auth');
