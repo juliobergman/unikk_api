@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             CompanySettingsSeeder::class,
             PeccSeeder::class,
             ContactSeeder::class,
+            MembershipSeeder::class,
         ]);
     }
 }
