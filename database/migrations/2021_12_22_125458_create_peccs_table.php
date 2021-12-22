@@ -15,7 +15,9 @@ class CreatePeccsTable extends Migration
     {
         Schema::create('peccs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->default(1)->constrained();
+
+            $table->foreignId('company_id')->constrained();
+            $table->foreignId('user_id')->constrained();
 
             $table->string('fund')->nullable();
             $table->string('type')->nullable();
@@ -27,6 +29,8 @@ class CreatePeccsTable extends Migration
             $table->text('geo_focus')->nullable();
             $table->text('logo')->nullable();
             $table->text('notes')->nullable();
+
+            $table->enum('public', ['yes', 'no'])->default('no');
 
             $table->softDeletes();
             $table->timestamps();
