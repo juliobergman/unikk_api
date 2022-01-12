@@ -20,7 +20,9 @@ class UserSeeder extends Seeder
     public function run()
     {
         User::factory(1)
-        ->has(UserData::factory())
+        ->has(UserData::factory()->state([
+            'profile_pic' => '/storage/factory/avatar/male/avatar-10.jpg',
+        ]))
         ->has(Contact::factory(5))
         ->state([
             'id' => 1,

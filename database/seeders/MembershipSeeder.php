@@ -19,7 +19,7 @@ class MembershipSeeder extends Seeder
             'id' => 1,
             'user_id' => 1,
             'company_id' => 1,
-            'job_title' => 'System Administrator',
+            'job_title' => 'Developer',
             'role' => 'admin',
             'default' => 1,
             'created_at' => now(),
