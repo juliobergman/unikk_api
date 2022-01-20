@@ -14,14 +14,14 @@ class MembershipSeeder extends Seeder
      */
     public function run()
     {
-        Membership::factory(1)
+        Membership::factory(2)
         ->state([
-            'id' => 1,
+            // 'id' => 1,
             'user_id' => 1,
             'company_id' => 1,
             'job_title' => 'Developer',
             'role' => 'admin',
-            'default' => 1,
+            // 'default' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ])

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Company;
 use App\Models\Membership;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -45,15 +46,58 @@ class UserController extends Controller
 
         $mq = Membership::query();
         $mq->where('user_id', $user->id);
+        $mq->orderByDesc('default');
         $memberships = $mq->get();
 
-        $tk = explode(' ',$request->header('Authorization'));
+        $data_select_company = [
+            // Companies
+            'companies.id',
+            'companies.name',
+            'companies.type',
+            // CompanyData
+            'company_data.address',
+            'company_data.city',
+            'company_data.sector',
+            'company_data.country',
+            'company_data.currency_id',
+            'company_data.phone',
+            'company_data.email',
+            'company_data.website',
+            'company_data.info',
+            'company_data.logo',
+            'company_data.shares',
+            'company_data.taxrate',
+            // Currency
+            'currencies.name as currency_name',
+            'currencies.symbol as currency_symbol',
+            'currencies.code as currency_code',
+            // Country
+            'countries.name as country_name',
+            'countries.region as country_region',
+            'countries.subregion as country_subregion',
+            'countries.latitude as country_latitude',
+            'countries.longitude as country_longitude',
+        ];
+
+        $cq = Company::query();
+        // Where
+        $cq->where('companies.id', $memberships[0]->id);
+        // Selects
+        $cq->select($data_select_company);
+        // Join
+        $cq->join('company_data', 'companies.id', '=', 'company_data.company_id');
+        $cq->join('currencies', 'company_data.currency_id', '=', 'currencies.id');
+        $cq->join('countries', 'company_data.country', '=', 'countries.iso2');
+        $company = $cq->first();
+
+        $tk = explode(' ', $request->header('Authorization'));
 
         return new JsonResponse([
             'message' => 'Authenticated', 
             'auth' => true,
             'token' => $tk[1],
             'user' => $user, 
+            'company' => $company, 
             'currentMembership' => $memberships[0],
             'userMemberships' => $memberships
         ], 200);

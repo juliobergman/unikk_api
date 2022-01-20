@@ -16,15 +16,14 @@ class CompanySeeder extends Seeder
      */
     public function run()
     {
-        Company::factory(1)
+        Company::factory(2)
         ->has(CompanyData::factory())
         ->has(CompanyTargetData::factory())
         ->state([
-            'id' => 1,
+            // 'id' => 1,
             'user_id' => 1,
             'company_id' => 1,
-            'currency_id' => 2,
-            'name' => 'Unikk Ventures',
+            // 'name' => 'Unikk Ventures',
             'type' => 'active',
         ])
         ->create();
