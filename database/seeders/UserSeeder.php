@@ -21,7 +21,8 @@ class UserSeeder extends Seeder
     {
         User::factory(1)
         ->has(UserData::factory()->state([
-            'profile_pic' => '/storage/factory/avatar/male/avatar-10.jpg',
+            'profile_pic' => '/storage/factory/avatar/misc/stormtrooper.jpg',
+            'country' => 'VE',
         ]))
         ->has(Contact::factory(5))
         ->state([

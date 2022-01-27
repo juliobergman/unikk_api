@@ -120,7 +120,6 @@ class CompanyController extends Controller
             'name' => ['required'],
             'currency_id' => ['required'],
             'country' => ['required'],
-            'logo' => ['required'],
         ]);
         
         $update = [
@@ -148,7 +147,10 @@ class CompanyController extends Controller
         if($updated){
             $dataupdated = CompanyData::where('company_id', $company->id)->update($update['companydata']);
             if ($dataupdated) {
-                return new JsonResponse(['message' => 'Company Successfully Updated'], 200);
+
+                $comp = $this->show($company);
+
+                return new JsonResponse(['message' => 'Company Successfully Updated', 'company' => $comp], 200);
             }
         }
         return new JsonResponse(['message' => 'Request Failed to Complete'], 422);
