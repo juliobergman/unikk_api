@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Membership;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class MembershipController extends Controller
 {
@@ -14,7 +16,46 @@ class MembershipController extends Controller
      */
     public function index()
     {
-        //
+        return 'membership/index';
+    }
+
+    public function set(Request $request)
+    {
+        $request->validate([
+            'id' => ['required'],
+        ]);
+
+        $data_select = [
+            // Membership
+            'memberships.id',
+            'memberships.user_id',
+            'memberships.company_id',
+            'memberships.job_title',
+            'memberships.role',
+            // Company
+            'companies.name as company_name',
+        ];
+
+        $user = Auth::user();
+        $memberships = Membership::where('user_id', $user->id)->update(['default' => null]);
+        
+        if($memberships){
+            $membership = Membership::where('id', $request->id)->update(['default' => 1]);
+            if ($membership) {
+
+                $mq = Membership::query();
+                // Where
+                $mq->where('memberships.id', $request->id);
+                // Selects
+                $mq->select($data_select);
+                // Join
+                $mq->join('companies', 'memberships.company_id', '=', 'companies.id');
+                $rmembership = $mq->first();
+
+                return new JsonResponse(['message' => 'Membership Successfully set', 'membership' => $rmembership], 200);
+            }
+        }
+        return new JsonResponse(['message' => 'Request Failed to Complete'], 422);
     }
 
     /**

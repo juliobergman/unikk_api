@@ -58,8 +58,26 @@ class LoginController extends Controller
             $uq->join('countries', 'user_data.country', '=', 'countries.iso2');
             $user = $uq->first();
 
+            $data_select_membership = [
+                // Membership
+                'memberships.id',
+                'memberships.user_id',
+                'memberships.company_id',
+                'memberships.job_title',
+                'memberships.role',
+                // Company
+                'companies.name as company_name',
+            ];
+            
             $mq = Membership::query();
-            $mq->where('user_id', $request->user()->id);
+            // Where
+            $mq->where('memberships.user_id', $user->id);
+            $mq->where('companies.type', 'active');
+            // Selects
+            $mq->select($data_select_membership);
+            // Join
+            $mq->join('companies', 'memberships.company_id', '=', 'companies.id');
+            // Order
             $mq->orderByDesc('default');
             $memberships = $mq->get();
 

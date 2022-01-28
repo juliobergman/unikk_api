@@ -6,46 +6,45 @@ use App\Models\Company;
 use App\Models\CompanyData;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Validator;
 
 class CompanyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'company_id' => ['required', 'int', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
+            'country' => ['required', 'string', 'max:2'],
+            'currency_id' => ['required', 'int', 'max:255'],
+            'type' => ['required', 'string'],
+        ]);
+    }
+
     public function index()
     {
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
-    {
-        //
+    {    
+        $this->validator($request->all())->validate();
+        $newCompany = $request->user()->company()->create($request->only(['name','type','company_id']));
+
+        return $newCompany;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Company  $company
-     * @return \Illuminate\Http\Response
-     */
+
+    public function storeasd(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        $newCompany = $request->user()->company()->create($request->only(['name','currency_id','type','company_id']));
+        // event(new companyCreated($newCompany, $request->country));
+        // $membership = Membership::where('company_id', $newCompany->id)->where('user_id', $newCompany->user_id)->first();
+        // return new JsonResponse(['company' => $newCompany, 'membership' => $membership], 201);
+    }
+
     public function show(Company $company)
     {
         $data_select = [
@@ -96,24 +95,6 @@ class CompanyController extends Controller
         return $company;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Company  $company
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Company $company)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Company  $company
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Company $company)
     {   
         $request->validate([
@@ -158,12 +139,6 @@ class CompanyController extends Controller
         
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Company  $company
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Company $company)
     {
         //

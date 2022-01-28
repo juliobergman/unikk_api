@@ -9,6 +9,7 @@ use App\Http\Controllers\UploadController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\MembershipController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,12 +64,25 @@ Route::middleware('auth:sanctum')->prefix('/user')->group(function(){
 // Company
 Route::middleware('auth:sanctum')->prefix('/company')->group(function(){
     Route::get('/', [CompanyController::class, 'index']);
-    Route::get('/create', [CompanyController::class, 'create']);
     Route::post('/store', [CompanyController::class, 'store']);
+    Route::post('/create', [CompanyController::class, 'create']);
     Route::get('/show/{company}', [CompanyController::class, 'show']);
     Route::get('/edit', [CompanyController::class, 'edit']);
     Route::post('/update/{company}', [CompanyController::class, 'update']);
     Route::get('/destroy/{company}', [CompanyController::class, 'destroy']);
+});
+
+// Memberships
+Route::middleware('auth:sanctum')->prefix('/membership')->group(function(){
+    Route::get('/', [MembershipController::class, 'index']);
+    Route::put('/set', [MembershipController::class, 'set']);
+    // ---------------------------------------------------------------
+    Route::get('/create', [MembershipController::class, 'create']);
+    Route::post('/store', [MembershipController::class, 'store']);
+    Route::get('/show/{company}', [MembershipController::class, 'show']);
+    Route::get('/edit', [MembershipController::class, 'edit']);
+    Route::post('/update/{company}', [MembershipController::class, 'update']);
+    Route::get('/destroy/{company}', [MembershipController::class, 'destroy']);
 });
 
 
