@@ -30,9 +30,29 @@ class CompanyController extends Controller
     public function store(Request $request)
     {    
         $this->validator($request->all())->validate();
-        $newCompany = $request->user()->company()->create($request->only(['name','type','company_id']));
 
-        return $newCompany;
+        // Create Company
+        $newCompany = $request->user()->company()->create($request->only(['name','type','company_id']));
+        // Create Company Data
+        if($newCompany){
+            $newCompanyData = $newCompany->companydata()->create($request->only(['company_id','country','currency_id']));
+            if($newCompanyData){
+                $newMembership = $request->user()->membership()->create([
+                    'company_id' => $newCompany->id,
+                    'role' => 'admin'
+                ]);
+                if($newMembership){
+                    return new JsonResponse([
+                        'message' => 'Company Stored',
+                        'company' => $this->show($newCompany),
+                        'membership' => $newMembership
+                    ],
+                        200);
+                }
+            }
+        }
+
+        return new JsonResponse(['message' => 'Request Failed to Complete'], 422);
     }
 
 

@@ -27,5 +27,16 @@ class CompanySeeder extends Seeder
             'type' => 'active',
         ])
         ->create();
+        Company::factory(5)
+        ->has(CompanyData::factory())
+        ->has(CompanyTargetData::factory())
+        ->state([
+            // 'id' => 1,
+            'user_id' => 1,
+            'company_id' => 1,
+            // 'name' => 'Unikk Ventures',
+            'type' => 'target',
+        ])
+        ->create();
     }
 }

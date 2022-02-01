@@ -24,7 +24,6 @@ class DatabaseSeeder extends Seeder
             CompanySeeder::class,
             CompanyDataSeeder::class,
             CompanyTargetDataSeeder::class,
-            CompanySettingsSeeder::class,
             PeccSeeder::class,
             ContactSeeder::class,
             MembershipSeeder::class,

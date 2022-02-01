@@ -31,7 +31,7 @@ class CreateCompanyDataTable extends Migration
             $table->string('email')->nullable();
             $table->string('website')->nullable();
             $table->text('info')->nullable();
-            $table->string('logo')->nullable();
+            $table->string('logo')->default('/storage/factory/avatar/misc/avatar-company.jpg');
             // Soft & TimeStamps
             $table->softDeletes();
             $table->timestamps();
