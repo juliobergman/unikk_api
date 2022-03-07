@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             CompanyTargetDataSeeder::class,
             PeccSeeder::class,
             ContactSeeder::class,
-            MembershipSeeder::class,
+            // MembershipSeeder::class,
             TokenSeeder::class
         ]);
     }

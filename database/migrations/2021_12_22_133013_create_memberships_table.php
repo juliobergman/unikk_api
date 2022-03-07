@@ -15,11 +15,13 @@ class CreateMembershipsTable extends Migration
     {
         Schema::create('memberships', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained();
-            $table->foreignId('company_id')->nullable()->constrained()->onDelete('cascade');
+            // $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('user_id')->nullable();
+            // $table->foreignId('company_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('company_id')->nullable()->onDelete('cascade');
             $table->string('job_title')->nullable();
-            $table->enum('role', ['admin','editor','user'])->default('user');
-            $table->boolean('default')->default(null)->nullable();
+            $table->enum('role', ['user', 'editor', 'admin'])->default('user');
+            $table->boolean('selected')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -29,44 +29,34 @@ Route::post('/login', [LoginController::class, 'login']);
 //Resources
 Route::middleware('auth:sanctum')->prefix('/country')->group(function(){
     Route::get('/', [CountryController::class, 'index']);
-    Route::get('/create', [CountryController::class, 'create']);
-    Route::post('/store', [CountryController::class, 'store']);
-    Route::get('/show/{company}', [CountryController::class, 'show']);
-    Route::get('/edit', [CountryController::class, 'edit']);
-    Route::post('/update/{company}', [CountryController::class, 'update']);
-    Route::get('/destroy/{company}', [CountryController::class, 'destroy']);
 });
 Route::middleware('auth:sanctum')->prefix('/currency')->group(function(){
     Route::get('/', [CurrencyController::class, 'index']);
-    Route::get('/create', [CurrencyController::class, 'create']);
-    Route::post('/store', [CurrencyController::class, 'store']);
-    Route::get('/show/{company}', [CurrencyController::class, 'show']);
-    Route::get('/edit', [CurrencyController::class, 'edit']);
-    Route::post('/update/{company}', [CurrencyController::class, 'update']);
-    Route::get('/destroy/{company}', [CurrencyController::class, 'destroy']);
 });
 
 // User
 Route::middleware('auth:sanctum')->post('/sanctum/token', [TokenController::class, 'token']);
 Route::middleware('auth:sanctum')->prefix('/user')->group(function(){
-    Route::get('/auth', [TokenController::class, 'auth']);
     Route::get('/', [UserController::class, 'index']);
+    Route::get('/auth', [TokenController::class, 'auth']);
     Route::get('/show/{user}', [UserController::class, 'show']);
     Route::put('/update/{user}', [UserController::class, 'update']);
+    Route::get('/destroy/{user}', [UserController::class, 'destroy']);
     // -----------------------------------------------------------
     // -----------------------------------------------------------
     Route::post('/store', [UserController::class, 'store']);
     Route::get('/create', [UserController::class, 'create']);
     Route::get('/edit', [UserController::class, 'edit']);
-    Route::get('/destroy/{user}', [UserController::class, 'destroy']);
 });
 
 // Company
+// Route::get('/company/show/{company}', [CompanyController::class, 'show']);
 Route::middleware('auth:sanctum')->prefix('/company')->group(function(){
-    Route::get('/', [CompanyController::class, 'index']);
+    Route::get('/{company}/type/{type?}', [CompanyController::class, 'index']);
+    Route::get('/show/{company}/{type?}', [CompanyController::class, 'show']);
+    // Route::get('/show/{company}/type/{type?}', [CompanyController::class, 'show']);
     Route::post('/store', [CompanyController::class, 'store']);
     Route::post('/create', [CompanyController::class, 'create']);
-    Route::get('/show/{company}', [CompanyController::class, 'show']);
     Route::get('/edit', [CompanyController::class, 'edit']);
     Route::post('/update/{company}', [CompanyController::class, 'update']);
     Route::get('/destroy/{company}', [CompanyController::class, 'destroy']);
@@ -75,14 +65,16 @@ Route::middleware('auth:sanctum')->prefix('/company')->group(function(){
 // Memberships
 Route::middleware('auth:sanctum')->prefix('/membership')->group(function(){
     Route::get('/', [MembershipController::class, 'index']);
-    Route::put('/set', [MembershipController::class, 'set']);
+    Route::get('/user', [MembershipController::class, 'user']);
+    Route::put('/set/{membership}', [MembershipController::class, 'set']);
+    Route::put('/update/{membership}', [MembershipController::class, 'update']);
+    Route::get('/destroy/{membership}', [MembershipController::class, 'destroy']);
     // ---------------------------------------------------------------
     Route::get('/create', [MembershipController::class, 'create']);
     Route::post('/store', [MembershipController::class, 'store']);
     Route::get('/show/{company}', [MembershipController::class, 'show']);
+    Route::get('/show/{company}', [MembershipController::class, 'show']);
     Route::get('/edit', [MembershipController::class, 'edit']);
-    Route::post('/update/{company}', [MembershipController::class, 'update']);
-    Route::get('/destroy/{company}', [MembershipController::class, 'destroy']);
 });
 
 

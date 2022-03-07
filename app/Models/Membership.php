@@ -14,6 +14,7 @@ class Membership extends Model
         'user_id',
         'company_id',
         'job_title',
+        'default',
         'role',
     ];
 
@@ -23,6 +24,19 @@ class Membership extends Model
         'created_at',
         'updated_at'
     ];
+
+    protected $casts = [
+        'selected' => 'boolean'
+    ];
+
+    protected $appends = [
+        'role_name'
+    ];
+
+    public function getRoleNameAttribute()
+    {
+        return ucwords($this->role);
+    }
 
     public function user()
     {

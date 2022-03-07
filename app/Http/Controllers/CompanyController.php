@@ -11,6 +11,38 @@ use Illuminate\Support\Facades\Validator;
 class CompanyController extends Controller
 {
 
+    public $data_select = [
+        // Companies
+        'companies.id',
+        'companies.company_id',
+        'companies.name',
+        'companies.type',
+        // CompanyData
+        'company_data.address',
+        'company_data.city',
+        'company_data.sector',
+        'company_data.country',
+        'company_data.currency_id',
+        'company_data.phone',
+        'company_data.email',
+        'company_data.website',
+        'company_data.info',
+        'company_data.logo',
+        'company_data.shares',
+        'company_data.taxrate',
+        // Currency
+        'currencies.name as currency_name',
+        'currencies.symbol as currency_symbol',
+        'currencies.code as currency_code',
+        // Country
+        'countries.name as country_name',
+        'countries.region as country_region',
+        'countries.subregion as country_subregion',
+        'countries.latitude as country_latitude',
+        'countries.longitude as country_longitude',
+    ];
+    
+    
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -22,9 +54,18 @@ class CompanyController extends Controller
         ]);
     }
 
-    public function index()
+    public function index(Company $company, $type = 'active')
     {
-        //
+        $companies = Company::query();
+        $companies->where('companies.company_id', $company->id);
+        $companies->where('type', $type);
+        // Select
+        $companies->select($this->data_select);
+        // Join
+        $companies->join('company_data', 'companies.id', '=', 'company_data.company_id');
+        $companies->join('currencies', 'company_data.currency_id', '=', 'currencies.id');
+        $companies->join('countries', 'company_data.country', '=', 'countries.iso2');
+        return $companies->get();
     }
 
     public function store(Request $request)
@@ -36,7 +77,8 @@ class CompanyController extends Controller
         // Create Company Data
         if($newCompany){
             $newCompanyData = $newCompany->companydata()->create($request->only(['company_id','country','currency_id']));
-            if($newCompanyData){
+            $newTargetData = $newCompany->companytargetdata()->create($request->only(['company_id']));
+            if($newCompanyData && $newTargetData){
                 $newMembership = $request->user()->membership()->create([
                     'company_id' => $newCompany->id,
                     'role' => 'admin'
@@ -55,63 +97,37 @@ class CompanyController extends Controller
         return new JsonResponse(['message' => 'Request Failed to Complete'], 422);
     }
 
-
-    public function storeasd(Request $request)
-    {
-        $this->validator($request->all())->validate();
-        $newCompany = $request->user()->company()->create($request->only(['name','currency_id','type','company_id']));
-        // event(new companyCreated($newCompany, $request->country));
-        // $membership = Membership::where('company_id', $newCompany->id)->where('user_id', $newCompany->user_id)->first();
-        // return new JsonResponse(['company' => $newCompany, 'membership' => $membership], 201);
-    }
-
-    public function show(Company $company)
-    {
-        $data_select = [
-            // Companies
-            'companies.id',
-            'companies.name',
-            'companies.type',
-            // CompanyData
-            'company_data.address',
-            'company_data.city',
-            'company_data.sector',
-            'company_data.country',
-            'company_data.currency_id',
-            'company_data.phone',
-            'company_data.email',
-            'company_data.website',
-            'company_data.info',
-            'company_data.logo',
-            'company_data.shares',
-            'company_data.taxrate',
-            // Currency
-            'currencies.name as currency_name',
-            'currencies.symbol as currency_symbol',
-            'currencies.code as currency_code',
-            // Country
-            'countries.name as country_name',
-            'countries.region as country_region',
-            'countries.subregion as country_subregion',
-            'countries.latitude as country_latitude',
-            'countries.longitude as country_longitude',
-        ];
+    public function show(Company $company, $type = null)
+    {   
+        $select = $this->data_select;
 
         $cq = Company::query();
         // Where
         $cq->where('companies.id', $company->id);
-        // Selects
-        $cq->select($data_select);
         // Join
         $cq->join('company_data', 'companies.id', '=', 'company_data.company_id');
         $cq->join('currencies', 'company_data.currency_id', '=', 'currencies.id');
         $cq->join('countries', 'company_data.country', '=', 'countries.iso2');
+        if($type === 'target'){
+            $cq->join('company_target_data', 'companies.id', '=', 'company_target_data.company_id');
+            $select = 
+            array_merge(
+            $this->data_select,
+            [
+                // Target Data
+                'company_target_data.company_ov as target_company_ov',
+                'company_target_data.financial_ov as target_financial_ov',
+                'company_target_data.milestones as target_milestones',
+                'company_target_data.competitors as target_competitors',
+                'company_target_data.goals as target_goals',
+                'company_target_data.channels as target_channels',
+                'company_target_data.challenges as target_challenges',
+            ]);
+        }
+        // Selects
+        $cq->select($select);
+        // Result
         $company = $cq->first();
-
-        // $mq = Membership::query();
-        // $mq->where('user_id', $user->id);
-        // $memberships = $mq->get();
-
         return $company;
     }
 

@@ -16,6 +16,8 @@ class CompanySeeder extends Seeder
      */
     public function run()
     {
+        
+        // Active
         Company::factory(2)
         ->has(CompanyData::factory())
         ->has(CompanyTargetData::factory())
@@ -27,7 +29,10 @@ class CompanySeeder extends Seeder
             'type' => 'active',
         ])
         ->create();
-        Company::factory(5)
+
+
+        // Targets
+        Company::factory(25)
         ->has(CompanyData::factory())
         ->has(CompanyTargetData::factory())
         ->state([
