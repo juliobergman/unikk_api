@@ -6,9 +6,11 @@ use App\Models\User;
 use App\Models\Company;
 use App\Models\UserData;
 use App\Models\Membership;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -92,7 +94,36 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        return $request;
+        $request->validate([
+            'company_id' => ['required'],
+            'email' => ['required'],
+        ]);
+
+        $hash = Hash::make(Str::random(20));
+        $company = Company::where('id', $request->company_id)->first();
+
+        $user = new User([
+            'email' => $request->email,
+            'password' => $hash
+        ]);
+        $user->save();
+
+        $userdata = new UserData([
+            'profile_pic' => '/storage/factory/avatar/misc/avatar-user.jpg'
+        ]);
+        $userdata->user()->associate($user);
+        $userdata->save();
+
+
+        $membership = new Membership([
+            'job_title' => $request->job_title
+        ]);
+        $membership->user()->associate($user);
+        $membership->company()->associate($company);
+        $membership->save();
+
+        return $user;
+
     }
 
     public function show(User $user)

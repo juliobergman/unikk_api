@@ -22,7 +22,6 @@ use App\Http\Controllers\MembershipController;
 |
 */
 
-
 // Login
 Route::post('/login', [LoginController::class, 'login']);
 
@@ -40,11 +39,11 @@ Route::middleware('auth:sanctum')->prefix('/user')->group(function(){
     Route::get('/', [UserController::class, 'index']);
     Route::get('/auth', [TokenController::class, 'auth']);
     Route::get('/show/{user}', [UserController::class, 'show']);
+    Route::post('/store', [UserController::class, 'store']);
     Route::put('/update/{user}', [UserController::class, 'update']);
     Route::get('/destroy/{user}', [UserController::class, 'destroy']);
     // -----------------------------------------------------------
     // -----------------------------------------------------------
-    Route::post('/store', [UserController::class, 'store']);
     Route::get('/create', [UserController::class, 'create']);
     Route::get('/edit', [UserController::class, 'edit']);
 });

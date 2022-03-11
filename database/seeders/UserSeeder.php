@@ -29,7 +29,6 @@ class UserSeeder extends Seeder
             'email' => env('OWNER_EMAIL'),
             'email_verified_at' => now(),
             'password' => Hash::make(env('OWNER_PASSWORD')),
-            'temptoken' => Str::random(10),
             'remember_token' => Str::random(10),
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -39,7 +38,7 @@ class UserSeeder extends Seeder
             'country' => 'VE',
         ]))
         ->has(Contact::factory(10))
-        ->has(Membership::factory(2)->state(new Sequence(
+        ->has(Membership::factory(1)->state(new Sequence(
             [
                 'company_id' => 1,
                 'job_title' => 'Developer',
@@ -54,7 +53,7 @@ class UserSeeder extends Seeder
         )
         ->create();
 
-        User::factory(80)
+        User::factory(0)
         ->state(new Sequence(
             ['email_verified_at' => now()],
             ['email_verified_at' => null],
