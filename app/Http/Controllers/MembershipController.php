@@ -31,7 +31,17 @@ class MembershipController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $company_id = Membership::where('user_id', $user->id)->orderBy('id', 'DESC')->first()->company_id;
+
+
+        // Memberships
+        $memberships = collect($this->user($request));
+        $current_membership = $memberships->where('selected', true)->first();
+        if(!$current_membership){
+            $current_membership = $memberships->first();
+        }
+        $company_id = $current_membership->company_id;
+
+        // return $company_id;
 
         // Handling Sort
         if($request->sort){$sort = explode('-', $request->sort); } else {$sort = ['id', 'asc']; }
@@ -72,9 +82,59 @@ class MembershipController extends Controller
         $workgroup = $wg->paginate(12);
         
         $implode_sort = implode('-', $sort);
-        $workgroup->appends(['sort' => $implode_sort]);
         $workgroup->appends(['search' => $request->search]);
+        $workgroup->appends(['sort' => $implode_sort]);
 
+        return $workgroup;
+
+    }
+
+    public function search_new(Request $request)
+    {
+        $user = $request->user();
+
+        // Memberships
+        $memberships = collect($this->user($request));
+        $current_membership = $memberships->where('selected', true)->first();
+        if(!$current_membership){
+            $current_membership = $memberships->first();
+        }
+        $company_id = $current_membership->company_id;
+
+        $wg = Membership::query();
+        // Where
+        $wg->where('memberships.user_id', '!=', $user->id);
+        $wg->where('memberships.company_id', '!=', $company_id);
+
+        // Search
+        if(!empty($request->search)){
+            $searchFields = ['users.name','memberships.job_title','countries.name','countries.region'];
+            $wg->where(function($query) use($request, $searchFields){
+                $searchWildcard = '%' . $request->search . '%';
+                foreach($searchFields as $field){
+                $query->orWhere($field, 'LIKE', $searchWildcard);
+                }
+            });
+        }
+
+        $data_select = (new UserController)->data_select;
+
+        $user_select = array_merge($data_select, [
+            'memberships.id as membership_id',
+            'memberships.job_title',
+            'memberships.role'
+        ]);
+
+        $wg->select($user_select);
+        // Join
+        $wg->join('users', 'memberships.user_id', '=', 'users.id');
+        $wg->join('user_data', 'users.id', '=', 'user_data.user_id');
+        $wg->join('countries', 'user_data.country', '=', 'countries.iso2');
+
+        // Limit Results
+        // $wg->limit(5);
+
+        $workgroup = $wg->get();
         return $workgroup;
 
     }
@@ -111,24 +171,39 @@ class MembershipController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {   
+        $request->validate([
+            'id' => 'required',
+            'company_id' => 'required',
+            'job_title' => 'required',
+        ]);
+        
+        $create = [
+            'user_id' => $request->id,
+            'company_id' => $request->company_id,
+            'job_title' => $request->job_title,
+            'role' => 'user',
+        ];
+
+        $membership = Membership::create($create);
+
+        return new JsonResponse(['message' => 'Membership Successfully Created', 'membership' => $membership], 200);
+
+        // $stored = Membership;
+        // if($memberships){
+        //     $set_membership = Membership::where('id', $membership->id)->update(['selected' => true]);
+        //     if ($set_membership) {
+        //         $ret_membership = $this->show($membership);
+        //         return new JsonResponse(['message' => 'Membership Successfully set', 'membership' => $ret_membership], 200);
+        //     }
+        // }
+        // return new JsonResponse(['message' => 'Request Failed to Complete'], 422);
     }
 
     /**

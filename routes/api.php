@@ -66,15 +66,14 @@ Route::middleware('auth:sanctum')->prefix('/company')->group(function(){
 Route::middleware('auth:sanctum')->prefix('/membership')->group(function(){
     Route::get('/', [MembershipController::class, 'index']);
     Route::get('/user', [MembershipController::class, 'user']);
+    Route::get('/search/new', [MembershipController::class, 'search_new']);
     Route::put('/set/{membership}', [MembershipController::class, 'set']);
+    Route::post('/store', [MembershipController::class, 'store']);
     Route::put('/update/{membership}', [MembershipController::class, 'update']);
     Route::get('/destroy/{membership}', [MembershipController::class, 'destroy']);
     // ---------------------------------------------------------------
     Route::get('/create', [MembershipController::class, 'create']);
-    Route::post('/store', [MembershipController::class, 'store']);
-    Route::get('/show/{company}', [MembershipController::class, 'show']);
-    Route::get('/show/{company}', [MembershipController::class, 'show']);
-    Route::get('/edit', [MembershipController::class, 'edit']);
+    Route::get('/show/{membership}', [MembershipController::class, 'show']);
 });
 
 

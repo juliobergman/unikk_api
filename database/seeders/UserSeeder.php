@@ -54,7 +54,7 @@ class UserSeeder extends Seeder
         )
         ->create();
 
-        User::factory(10)
+        User::factory(80)
         ->state(new Sequence(
             ['email_verified_at' => now()],
             ['email_verified_at' => null],
@@ -90,24 +90,15 @@ class UserSeeder extends Seeder
   
         )
         ->has(
-            Membership::factory(2)
+            Membership::factory(1)
             ->state(new Sequence(
-                [
-                    'company_id' => 1,
-                    'role' => 'user',
-                ],
-                [
-                    'company_id' => 2,
-                    'role' => 'editor',
-                ],
-                [
-                    'company_id' => 1,
-                    'role' => 'admin',
-                ],
-                [
-                    'company_id' => 2,
-                    'role' => 'admin',
-                ]
+                ['company_id' => 1],
+                ['company_id' => 2],
+            ))
+            ->state(new Sequence(
+                ['role' => 'user'],
+                ['role' => 'editor'],
+                ['role' => 'admin'],
             ))
         )
         ->create();

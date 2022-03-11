@@ -54,18 +54,47 @@ class CompanyController extends Controller
         ]);
     }
 
-    public function index(Company $company, $type = 'active')
+    public function index(Request $request, Company $company, $type = 'active')
     {
-        $companies = Company::query();
-        $companies->where('companies.company_id', $company->id);
-        $companies->where('type', $type);
+        
+        // Handling Sort
+        if($request->sort){$sort = explode('-', $request->sort); } else {$sort = ['id', 'asc']; }
+        
+        
+        
+        $cq = Company::query();
+        // Where
+        $cq->where('companies.company_id', $company->id);
+        $cq->where('type', $type);
+    
+        // Search
+        if(!empty($request->search)){
+            $searchFields = ['companies.name','company_data.sector','countries.name','countries.region'];
+            $cq->where(function($query) use($request, $searchFields){
+                $searchWildcard = '%' . $request->search . '%';
+                foreach($searchFields as $field){
+                $query->orWhere($field, 'LIKE', $searchWildcard);
+                }
+            });
+        }
+
         // Select
-        $companies->select($this->data_select);
+        $cq->select($this->data_select);
         // Join
-        $companies->join('company_data', 'companies.id', '=', 'company_data.company_id');
-        $companies->join('currencies', 'company_data.currency_id', '=', 'currencies.id');
-        $companies->join('countries', 'company_data.country', '=', 'countries.iso2');
-        return $companies->get();
+        $cq->join('company_data', 'companies.id', '=', 'company_data.company_id');
+        $cq->join('currencies', 'company_data.currency_id', '=', 'currencies.id');
+        $cq->join('countries', 'company_data.country', '=', 'countries.iso2');
+        // Sort
+        $cq->orderBy($sort[0], $sort[1]);
+
+        $companies = $cq->paginate(12);
+
+        $implode_sort = implode('-', $sort);
+        $companies->appends(['search' => $request->search]);
+        $companies->appends(['sort' => $implode_sort]);
+
+        
+        return $companies;
     }
 
     public function store(Request $request)
