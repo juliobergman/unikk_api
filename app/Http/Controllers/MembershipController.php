@@ -75,7 +75,7 @@ class MembershipController extends Controller
         // Join
         $wg->join('users', 'memberships.user_id', '=', 'users.id');
         $wg->join('user_data', 'users.id', '=', 'user_data.user_id');
-        $wg->join('countries', 'user_data.country', '=', 'countries.iso2');
+        $wg->leftJoin('countries', 'user_data.country', '=', 'countries.iso2');
         // Sort
         $wg->orderBy($sort[0], $sort[1]);
 
@@ -129,7 +129,7 @@ class MembershipController extends Controller
         // Join
         $wg->join('users', 'memberships.user_id', '=', 'users.id');
         $wg->join('user_data', 'users.id', '=', 'user_data.user_id');
-        $wg->join('countries', 'user_data.country', '=', 'countries.iso2');
+        $wg->leftJoin('countries', 'user_data.country', '=', 'countries.iso2');
 
         // Limit Results
         // $wg->limit(5);

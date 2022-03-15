@@ -83,7 +83,7 @@ class CompanyController extends Controller
         // Join
         $cq->join('company_data', 'companies.id', '=', 'company_data.company_id');
         $cq->join('currencies', 'company_data.currency_id', '=', 'currencies.id');
-        $cq->join('countries', 'company_data.country', '=', 'countries.iso2');
+        $cq->leftJoin('countries', 'company_data.country', '=', 'countries.iso2');
         // Sort
         $cq->orderBy($sort[0], $sort[1]);
 
@@ -136,7 +136,7 @@ class CompanyController extends Controller
         // Join
         $cq->join('company_data', 'companies.id', '=', 'company_data.company_id');
         $cq->join('currencies', 'company_data.currency_id', '=', 'currencies.id');
-        $cq->join('countries', 'company_data.country', '=', 'countries.iso2');
+        $cq->leftJoin('countries', 'company_data.country', '=', 'countries.iso2');
         if($type === 'target'){
             $cq->join('company_target_data', 'companies.id', '=', 'company_target_data.company_id');
             $select = 

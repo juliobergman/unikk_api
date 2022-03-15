@@ -7,10 +7,14 @@ use App\Models\Company;
 use App\Models\UserData;
 use App\Models\Membership;
 use Illuminate\Support\Str;
+use App\Mail\UserInvitation;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Config;
 
 class UserController extends Controller
 {
@@ -36,6 +40,11 @@ class UserController extends Controller
         'countries.latitude as country_latitude',
         'countries.longitude as country_longitude',
     ];
+
+    public function select(Request $request, User $user)
+    {
+        return $user;
+    }
     
     public function index(Request $request)
     {
@@ -62,7 +71,7 @@ class UserController extends Controller
         $uq->select($user_select);
         // Join
         $uq->join('user_data', 'users.id', '=', 'user_data.user_id');
-        $uq->join('countries', 'user_data.country', '=', 'countries.iso2');
+        $uq->leftJoin('countries', 'user_data.country', '=', 'countries.iso2');
         $uq->join('memberships', function ($join) use ($current_membership) {
             $join->on('users.id', '=', 'memberships.user_id')
             ->where('memberships.id', '=', $current_membership->id);
@@ -100,6 +109,10 @@ class UserController extends Controller
         ]);
 
         $hash = Hash::make(Str::random(20));
+
+
+        $sender = $request->user();
+
         $company = Company::where('id', $request->company_id)->first();
 
         $user = new User([
@@ -116,14 +129,32 @@ class UserController extends Controller
 
 
         $membership = new Membership([
+            'role' => $request->role,
             'job_title' => $request->job_title
         ]);
         $membership->user()->associate($user);
         $membership->company()->associate($company);
         $membership->save();
 
-        return $user;
+        $token = $user->createToken(Hash::make($request->device))->plainTextToken;
 
+        // Create URL
+        $create_url = URL::signedRoute('password.create', [
+            'user' => $membership->user,
+            'token' => $token
+        ]);
+        $replace_url = Config::get('app.url');
+        $input_url = url('/');
+        $url = str_replace($input_url, $replace_url, $create_url);
+
+        // Send Invitation
+        Mail::to($user)->send(new UserInvitation($membership, $sender, $url));
+
+        return [
+            'membership' => $membership,
+            'sender' => $sender,
+            'token' => $token,
+        ];
     }
 
     public function show(User $user)
@@ -135,7 +166,7 @@ class UserController extends Controller
         $uq->select($this->data_select);
         // Join
         $uq->join('user_data', 'users.id', '=', 'user_data.user_id');
-        $uq->join('countries', 'user_data.country', '=', 'countries.iso2');
+        $uq->leftJoin('countries', 'user_data.country', '=', 'countries.iso2');
         return $uq->first();
     }
 
@@ -183,6 +214,24 @@ class UserController extends Controller
             return new JsonResponse(['message' => 'User Successfully Deleted'], 200);
         }
         return new JsonResponse(['message' => 'Request Failed to Complete'], 422);
+    }
+
+    public function new_account(Request $request)
+    {   
+        
+        $request->validate([
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $user = User::where('id', Auth::user()->id)->first();
+        $new_password = Hash::make($request->password);
+        $user->forceFill([
+            'password' => $new_password,
+            'email_verified_at' => now()
+        ])->setRememberToken(Str::random(60));
+        $user->save();
+        $request->user()->currentAccessToken()->delete();
+        return new JsonResponse(['message' => 'Welcome', 'user' => $user], 200);
     }
 
 }

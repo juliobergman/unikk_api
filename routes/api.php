@@ -42,10 +42,9 @@ Route::middleware('auth:sanctum')->prefix('/user')->group(function(){
     Route::post('/store', [UserController::class, 'store']);
     Route::put('/update/{user}', [UserController::class, 'update']);
     Route::get('/destroy/{user}', [UserController::class, 'destroy']);
-    // -----------------------------------------------------------
-    // -----------------------------------------------------------
-    Route::get('/create', [UserController::class, 'create']);
-    Route::get('/edit', [UserController::class, 'edit']);
+
+    Route::put('/new-account', [UserController::class, 'new_account']);
+    Route::get('/select/{user}', [UserController::class, 'select']);
 });
 
 // Company

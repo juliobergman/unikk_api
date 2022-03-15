@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TokenController;
+use App\Mail\UserInvitation;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +30,11 @@ Route::prefix('token')->group(function () {
     Route::middleware('auth:sanctum')->post('/list', [TokenController::class, 'list']);
 });
 
+// Mails
+Route::middleware('guest')->get('/new-account/{user}/{token}', [UserController::class, 'create_password'])->name('password.create');
+
+// Email Test
+Route::get('/email', [TestController::class, 'email']);
 
 
 // home
