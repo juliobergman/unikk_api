@@ -26,7 +26,7 @@ use App\Http\Controllers\MembershipController;
 Route::post('/login', [LoginController::class, 'login']);
 
 //Resources
-Route::middleware('auth:sanctum')->prefix('/country')->group(function(){
+Route::prefix('/country')->group(function(){
     Route::get('/', [CountryController::class, 'index']);
 });
 Route::middleware('auth:sanctum')->prefix('/currency')->group(function(){
@@ -37,6 +37,7 @@ Route::middleware('auth:sanctum')->prefix('/currency')->group(function(){
 Route::middleware('auth:sanctum')->post('/sanctum/token', [TokenController::class, 'token']);
 Route::middleware('auth:sanctum')->prefix('/user')->group(function(){
     Route::get('/', [UserController::class, 'index']);
+    Route::get('/search/new/{company}', [UserController::class, 'search_new']);
     Route::get('/auth', [TokenController::class, 'auth']);
     Route::get('/show/{user}', [UserController::class, 'show']);
     Route::post('/store', [UserController::class, 'store']);
@@ -64,11 +65,14 @@ Route::middleware('auth:sanctum')->prefix('/company')->group(function(){
 Route::middleware('auth:sanctum')->prefix('/membership')->group(function(){
     Route::get('/', [MembershipController::class, 'index']);
     Route::get('/user', [MembershipController::class, 'user']);
-    Route::get('/search/new', [MembershipController::class, 'search_new']);
+    Route::get('/search/invitations/{company}', [MembershipController::class, 'invitations']);
+    Route::get('/search/deleted/{company}', [MembershipController::class, 'deleted']);
     Route::put('/set/{membership}', [MembershipController::class, 'set']);
     Route::post('/store', [MembershipController::class, 'store']);
     Route::put('/update/{membership}', [MembershipController::class, 'update']);
     Route::get('/destroy/{membership}', [MembershipController::class, 'destroy']);
+    Route::get('/restore/{id}', [MembershipController::class, 'restore']);
+    Route::delete('/destroy/{id}', [MembershipController::class, 'destroy_forever']);
     // ---------------------------------------------------------------
     Route::get('/create', [MembershipController::class, 'create']);
     Route::get('/show/{membership}', [MembershipController::class, 'show']);

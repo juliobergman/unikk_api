@@ -18,9 +18,9 @@ class TokenSeeder extends Seeder
             'id' => 1,
             'tokenable_type' => 'App\Models\User',
             'tokenable_id' => 1,
-            'name' => 'MainToken',
+            'name' => 'test-token',
             'token' => 'fa842a78e1c227cf10a86a0364214a4e8e6acc6e3ab0a003c1cdf6197d562ad1',
-            'abilities' => '["server:view","server:update"]',
+            'abilities' => null,
             'last_used_at' => now(),
         ]);
     }

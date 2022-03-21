@@ -37,8 +37,8 @@ class UserSeeder extends Seeder
             'profile_pic' => '/storage/factory/avatar/misc/stormtrooper.jpg',
             'country' => 'VE',
         ]))
-        ->has(Contact::factory(10))
-        ->has(Membership::factory(1)->state(new Sequence(
+        ->has(Contact::factory(0))
+        ->has(Membership::factory(2)->state(new Sequence(
             [
                 'company_id' => 1,
                 'job_title' => 'Developer',
@@ -53,11 +53,10 @@ class UserSeeder extends Seeder
         )
         ->create();
 
-        User::factory(0)
-        ->state(new Sequence(
-            ['email_verified_at' => now()],
-            ['email_verified_at' => null],
-        ))
+        User::factory(10)
+        ->state([
+            'email_verified_at' => now()
+        ])
         ->has(
             UserData::factory()
             ->state(new Sequence(

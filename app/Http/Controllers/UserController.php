@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Database\Eloquent\Builder;
 
 class UserController extends Controller
 {
@@ -25,6 +26,7 @@ class UserController extends Controller
         'users.name',
         'users.email',
         'users.email_verified_at',
+        'users.created_at',
         // UserData
         'user_data.site',
         'user_data.phone',
@@ -53,6 +55,9 @@ class UserController extends Controller
 
         // Memberships
         $memberships = collect((new MembershipController)->user($request));
+
+        if(!$memberships->count()) return 'no_memberships';
+
         $current_membership = $memberships->where('selected', true)->first();
         if(!$current_membership){
             $current_membership = $memberships->first();
@@ -99,16 +104,64 @@ class UserController extends Controller
         ], 200);
     }
 
+    public function search_new(Request $request, Company $company)
+    {
+        $discard = User::query()
+                    ->whereHas('membership', function (Builder $query) use ($company, $request){
+                        $query->where('id','=', $request->user()->id);
+                        $query->orWhere('company_id','=', $company->id);
+                    })
+                    ->pluck('id')
+                    ->toArray();
+
+        $users = User::query();
+        // Where
+        $users->whereNotIn('users.id', $discard);
+        // Search
+        if(!empty($request->search)){
+            $searchFields = ['users.name','memberships.job_title','countries.name','countries.region'];
+            $users->where(function($query) use($request, $searchFields){
+                $searchWildcard = '%' . $request->search . '%';
+                foreach($searchFields as $field){
+                $query->orWhere($field, 'LIKE', $searchWildcard);
+                }
+            });
+        }
+        $data_select = (new UserController)->data_select;
+
+        $user_select = array_merge($data_select, [
+            'memberships.id as membership_id',
+            'users.id as user_id',
+            'memberships.company_id as company_id',
+            'memberships.job_title',
+            'memberships.role'
+        ]);
+
+        $users->select($user_select);
+        // Join
+        $users->join('user_data', 'users.id', '=', 'user_data.user_id');
+        $users->leftJoin('memberships', 'users.id', '=', 'memberships.user_id');
+        $users->leftJoin('countries', 'user_data.country', '=', 'countries.iso2');
+
+        // Limit Results
+        // $users->limit(5);
+
+        $users->orderBy('users.id');
+
+        return $users->get();
+
+    }
+
 
 
     public function store(Request $request)
     {
         $request->validate([
-            'company_id' => ['required'],
-            'email' => ['required'],
+            'company_id' => ['required','integer'],
+            'email' => ['email','required','unique:users'],
         ]);
 
-        $hash = Hash::make(Str::random(20));
+        $hash = Hash::make(Str::random(80));
 
 
         $sender = $request->user();
@@ -136,7 +189,7 @@ class UserController extends Controller
         $membership->company()->associate($company);
         $membership->save();
 
-        $token = $user->createToken(Hash::make($request->device))->plainTextToken;
+        $token = $user->createToken('invitation_token')->plainTextToken;
 
         // Create URL
         $create_url = URL::signedRoute('password.create', [
@@ -147,14 +200,17 @@ class UserController extends Controller
         $input_url = url('/');
         $url = str_replace($input_url, $replace_url, $create_url);
 
+        $in_data = [
+                'membership' => $membership,
+                'sender' => $sender,
+                'token' => $token,
+                'url' => $url,
+        ];
+
         // Send Invitation
         Mail::to($user)->send(new UserInvitation($membership, $sender, $url));
 
-        return [
-            'membership' => $membership,
-            'sender' => $sender,
-            'token' => $token,
-        ];
+        return new JsonResponse(['message' => 'Thanks!', 'insert_data' => $in_data], 200);
     }
 
     public function show(User $user)
@@ -220,10 +276,26 @@ class UserController extends Controller
     {   
         
         $request->validate([
+            'name' => 'required|min:3',
+            'country' => 'required',
             'password' => 'required|min:8|confirmed',
         ]);
 
-        $user = User::where('id', Auth::user()->id)->first();
+        $id = $request->user()->id;
+        
+        if(!$id) return new JsonResponse(['message' => 'Request Failed to Complete','errors' => ['user' => 'User Not Found']], 422);
+
+        $user = User::where('id', $id)->first();
+        $userdata = UserData::where('user_id', $id)->first();
+
+        if(!$user) return new JsonResponse(['message' => 'Request Failed to Complete','errors' => ['user' => 'User Not Found']], 422);
+        if(!$userdata) return new JsonResponse(['message' => 'Request Failed to Complete','errors' => ['userdata' => 'User Data Not Found']], 422);
+
+        $user->name = $request->name;
+        
+        $userdata->country = $request->country;
+        $userdata->save();
+
         $new_password = Hash::make($request->password);
         $user->forceFill([
             'password' => $new_password,

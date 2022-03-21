@@ -33,8 +33,9 @@ Route::prefix('token')->group(function () {
 // Mails
 Route::middleware('guest')->get('/new-account/{user}/{token}', [UserController::class, 'create_password'])->name('password.create');
 
-// Email Test
+// Tests
 Route::get('/email', [TestController::class, 'email']);
+Route::get('/membership', [TestController::class, 'membership']);
 
 
 // home

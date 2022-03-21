@@ -23,12 +23,29 @@ class LoginController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
+
         if (Auth::guard('web')->attempt($credentials)) {
             // Authorized
             $data = (new UserController)->index($request);
+            if($data === 'no_memberships'){
+                return new JsonResponse([
+                    'message' => 'Unauthenticated',
+                    'errors' => [
+                        'user' => ["It seems this account doesn't have access to this site anymore.", "We're sorry for the inconvenience..."]
+                    ],
+                    'auth' => false
+                ], 403);
+            }
             return $data;
         }
+
         // Not Authorized
-        return new JsonResponse(['message' => 'Unauthenticated', 'auth' => false], 419);
+        return new JsonResponse([
+            'message' => 'Unauthenticated',
+            'errors' => [
+                'email' => ["It seems the email password combination you entered is incorrect. Please try again."]
+            ],
+            'auth' => false
+        ], 401);
     }
 }

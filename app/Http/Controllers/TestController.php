@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pat;
 use App\Models\User;
 use App\Models\Membership;
 use App\Mail\UserInvitation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Database\Eloquent\Builder;
 
 class TestController extends Controller
 {
@@ -35,6 +37,20 @@ class TestController extends Controller
 
         return new UserInvitation($membership, $sender, $url);
         
+    }
+
+    public function membership()
+    {
+        
+        
+        // return Pat::all();
+        
+        $membership = Membership::query();
+        $membership->whereHas('pat', function (Builder $query) {
+            $query->where('name', '=', 'invitation_token');
+        });
+        
+        return $membership->get();
     }
 
 }
