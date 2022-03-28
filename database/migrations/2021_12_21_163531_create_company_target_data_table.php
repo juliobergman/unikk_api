@@ -23,6 +23,8 @@ class CreateCompanyTargetDataTable extends Migration
             $table->text('goals')->nullable();
             $table->text('channels')->nullable();
             $table->text('challenges')->nullable();
+            // Soft & TimeStamps
+            $table->softDeletes();
             $table->timestamps();
         });
     }

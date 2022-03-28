@@ -56,7 +56,13 @@ class UserController extends Controller
         // Memberships
         $memberships = collect((new MembershipController)->user($request));
 
-        if(!$memberships->count()) return 'no_memberships';
+        if(!$memberships->count()) return new JsonResponse([
+            'message' => 'Unauthenticated',
+            'errors' => [
+                'user' => ["It seems this account doesn't have access to this site anymore.", "We're sorry for the inconvenience..."]
+            ],
+            'auth' => false
+        ], 403);
 
         $current_membership = $memberships->where('selected', true)->first();
         if(!$current_membership){

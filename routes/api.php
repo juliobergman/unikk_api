@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\CompanyController;
@@ -22,8 +22,10 @@ use App\Http\Controllers\MembershipController;
 |
 */
 
-// Login
-Route::post('/login', [LoginController::class, 'login']);
+// Auth
+Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->get('/logout', [AuthController::class, 'logout']);
+Route::middleware('auth:sanctum')->post('/password/set', [AuthController::class, 'set_password']);
 
 //Resources
 Route::prefix('/country')->group(function(){
@@ -38,7 +40,6 @@ Route::middleware('auth:sanctum')->post('/sanctum/token', [TokenController::clas
 Route::middleware('auth:sanctum')->prefix('/user')->group(function(){
     Route::get('/', [UserController::class, 'index']);
     Route::get('/search/new/{company}', [UserController::class, 'search_new']);
-    Route::get('/auth', [TokenController::class, 'auth']);
     Route::get('/show/{user}', [UserController::class, 'show']);
     Route::post('/store', [UserController::class, 'store']);
     Route::put('/update/{user}', [UserController::class, 'update']);

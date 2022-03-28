@@ -65,7 +65,6 @@ class TokenController extends Controller
             ]);
         }
 
-
         $ret = [
             'user' => Auth::user(),
             'token' => $user->createToken($request->email)->plainTextToken

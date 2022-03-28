@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
             'email' => env('OWNER_EMAIL'),
             'email_verified_at' => now(),
             'password' => Hash::make(env('OWNER_PASSWORD')),
-            'remember_token' => Str::random(10),
+            'remember_token' => null,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ])

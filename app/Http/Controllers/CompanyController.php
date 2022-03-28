@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use App\Models\CompanyData;
 use Illuminate\Http\Request;
+use App\Models\CompanyTargetData;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 
@@ -186,13 +187,23 @@ class CompanyController extends Controller
                 'info' => $request->info,
                 'logo' => $request->logo,
             ],
+            'company_target' => [
+                'company_ov' => $request->target_company_ov,
+                'financial_ov' => $request->target_financial_ov,
+                'milestones' => $request->target_milestones,
+                'competitors' => $request->target_competitors,
+                'goals' => $request->target_goals,
+                'channels' => $request->target_channels,
+                'challenges' => $request->target_challenges,
+            ]
         ];
 
         $updated = Company::where('id', $company->id)->update($update['company']);
 
         if($updated){
             $dataupdated = CompanyData::where('company_id', $company->id)->update($update['companydata']);
-            if ($dataupdated) {
+            $targetupdated = CompanyTargetData::where('company_id', $company->id)->update($update['company_target']);
+            if ($dataupdated && $targetupdated) {
 
                 $comp = $this->show($company);
 
