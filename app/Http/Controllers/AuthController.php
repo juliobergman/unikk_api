@@ -124,7 +124,7 @@ class AuthController extends Controller
         );
      
         return $status === Password::PASSWORD_RESET
-                    ? ['status' => true, 'message' => __($status), 'user' => $retUser]
-                    : ['status' => false, 'message' => __($status)];
+                    ? new JsonResponse(['message' => __($status), 'user' => $retUser], 200)
+                    : new JsonResponse(['message' => __($status)], 400);
     }
 }
