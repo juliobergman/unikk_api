@@ -26,6 +26,9 @@ use App\Http\Controllers\MembershipController;
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->get('/logout', [AuthController::class, 'logout']);
 Route::middleware('auth:sanctum')->post('/password/set', [AuthController::class, 'set_password']);
+// Password Reset
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->middleware('guest')->name('password.email');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->middleware('guest')->name('password.update');
 
 //Resources
 Route::prefix('/country')->group(function(){
