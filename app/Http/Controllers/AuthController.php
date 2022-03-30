@@ -52,6 +52,8 @@ class AuthController extends Controller
     {
        $user = $request->user();
 
+        // 'password' => 'current_password:api'
+
         $credentials = $request->validate([
             'old_password' => ['required'],
             'password' => 'required|min:8|confirmed',

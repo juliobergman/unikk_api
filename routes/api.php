@@ -2,14 +2,16 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\MembershipController;
+use App\Http\Controllers\TestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,4 +89,38 @@ Route::middleware('auth:sanctum')->prefix('/membership')->group(function(){
 Route::middleware('auth:sanctum')->prefix('/upload')->group(function(){
     Route::post('/avatar/user', [UploadController::class, 'useravatar']);
     Route::post('/avatar/company/{company}', [UploadController::class, 'companyavatar']);
+});
+
+// Contacts
+Route::middleware('auth:sanctum')->prefix('/contact')->group(function(){
+    Route::get('/company/{id}', [ContactController::class, 'index']);
+    Route::get('/trashed', [ContactController::class, 'trashed']);
+    Route::get('/show/{contact}', [ContactController::class, 'show']);
+    Route::post('/store', [ContactController::class, 'store']);
+    Route::put('/update/{contact}', [ContactController::class, 'update']);
+    Route::delete('/destroy/{contact}', [ContactController::class, 'destroy']);
+    Route::get('/restore/{contact}', [ContactController::class, 'restore']);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Template
+Route::middleware('auth:sanctum')->prefix('/model')->group(function(){
+    Route::get('', [TestController::class, 'index']);
+    Route::get('/show/{contact}', [TestController::class, 'show']);
+    Route::post('/store', [TestController::class, 'store']);
+    Route::put('/update/{contact}', [TestController::class, 'update']);
+    Route::delete('/destroy/{id}', [TestController::class, 'destroy']);
 });
