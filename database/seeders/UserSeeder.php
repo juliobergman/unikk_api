@@ -37,7 +37,7 @@ class UserSeeder extends Seeder
             'profile_pic' => '/storage/factory/avatar/misc/stormtrooper.jpg',
             'country' => 'VE',
         ]))
-        ->has(Contact::factory(10))
+        ->has(Contact::factory(3))
         ->has(Membership::factory(2)->state(new Sequence(
             [
                 'company_id' => 1,
@@ -99,7 +99,11 @@ class UserSeeder extends Seeder
                 ['role' => 'admin'],
             ))
         )
-        ->has(Contact::factory(3))
+        ->has(Contact::factory(3)->state(new Sequence(
+            ['public' => null],
+            ['public' => 1],
+            ['public' => 2],
+        )))
         ->create();
     }
 }

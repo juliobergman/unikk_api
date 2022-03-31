@@ -11,6 +11,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\MembershipController;
+use App\Http\Controllers\PeccController;
 use App\Http\Controllers\TestController;
 
 /*
@@ -89,6 +90,17 @@ Route::middleware('auth:sanctum')->prefix('/membership')->group(function(){
 Route::middleware('auth:sanctum')->prefix('/upload')->group(function(){
     Route::post('/avatar/user', [UploadController::class, 'useravatar']);
     Route::post('/avatar/company/{company}', [UploadController::class, 'companyavatar']);
+});
+
+// Pecc
+Route::middleware('auth:sanctum')->prefix('/pecc')->group(function(){
+    Route::get('/company/{id}', [PeccController::class, 'index']);
+    Route::get('/trashed', [PeccController::class, 'trashed']);
+    Route::get('/show/{pecc}', [PeccController::class, 'show']);
+    Route::post('/store', [PeccController::class, 'store']);
+    Route::put('/update/{pecc}', [PeccController::class, 'update']);
+    Route::delete('/destroy/{pecc}', [PeccController::class, 'destroy']);
+    Route::get('/restore/{pecc}', [PeccController::class, 'restore']);
 });
 
 // Contacts

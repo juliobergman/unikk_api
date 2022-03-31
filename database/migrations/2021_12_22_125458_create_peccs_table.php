@@ -30,7 +30,7 @@ class CreatePeccsTable extends Migration
             $table->text('logo')->nullable();
             $table->text('notes')->nullable();
 
-            $table->enum('public', ['yes', 'no'])->default('no');
+            // $table->enum('public', ['yes', 'no'])->default('no');
 
             $table->softDeletes();
             $table->timestamps();
