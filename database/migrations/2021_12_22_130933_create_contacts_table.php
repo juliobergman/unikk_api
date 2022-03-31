@@ -18,7 +18,7 @@ class CreateContactsTable extends Migration
             $table->foreignId('user_id')->constrained();
 
             $table->unsignedBigInteger('public')->nullable();
-            $table->foreign('public')->references('id')->on('companies');
+            // $table->foreign('public')->references('id')->on('companies');
 
             $table->string('name');
             $table->string('company')->nullable();

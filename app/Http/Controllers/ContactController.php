@@ -12,17 +12,14 @@ class ContactController extends Controller
 
     public function index(Request $request, $id)
     {
-        $user = $request->user();
-        $contacts = Contact::query();
-        $contacts->where('user_id', $user->id);
-        $contacts->orWhere('public', $id);
+        $contacts = Contact::query()
+                    ->where('user_id', $request->user()->id)
+                    ->orWhere('public', $id);
         return $contacts->get();
     }
 
     public function store(Request $request)
     {
-        $user = $request->user();
-
         $request->validate([
             'public' => ['exists:companies,id'],
             'name' => ['required'],

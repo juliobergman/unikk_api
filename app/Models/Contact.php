@@ -24,7 +24,7 @@ class Contact extends Model
 
     protected $appends = [
         'is_owned',
-        'is_public'
+        'is_public',
     ];
 
     public function user()
