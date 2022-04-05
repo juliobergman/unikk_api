@@ -34,12 +34,8 @@ Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->midd
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->middleware('guest')->name('password.update');
 
 //Resources
-Route::prefix('/country')->group(function(){
-    Route::get('/', [CountryController::class, 'index']);
-});
-Route::middleware('auth:sanctum')->prefix('/currency')->group(function(){
-    Route::get('/', [CurrencyController::class, 'index']);
-});
+Route::get('/country', [CountryController::class, 'index']);
+Route::get('/currency', [CurrencyController::class, 'index']);
 
 // User
 Route::middleware('auth:sanctum')->post('/sanctum/token', [TokenController::class, 'token']);
@@ -99,8 +95,9 @@ Route::middleware('auth:sanctum')->prefix('/pecc')->group(function(){
     Route::get('/show/{pecc}', [PeccController::class, 'show']);
     Route::post('/store', [PeccController::class, 'store']);
     Route::put('/update/{pecc}', [PeccController::class, 'update']);
-    Route::delete('/destroy/{pecc}', [PeccController::class, 'destroy']);
+    Route::get('/destroy/{pecc}', [PeccController::class, 'destroy']);
     Route::get('/restore/{pecc}', [PeccController::class, 'restore']);
+    Route::delete('/destroy/{id}', [ContactController::class, 'destroy_forever']);
 });
 
 // Contacts
@@ -110,8 +107,9 @@ Route::middleware('auth:sanctum')->prefix('/contact')->group(function(){
     Route::get('/show/{contact}', [ContactController::class, 'show']);
     Route::post('/store', [ContactController::class, 'store']);
     Route::put('/update/{contact}', [ContactController::class, 'update']);
-    Route::delete('/destroy/{contact}', [ContactController::class, 'destroy']);
+    Route::get('/destroy/{contact}', [ContactController::class, 'destroy']);
     Route::get('/restore/{contact}', [ContactController::class, 'restore']);
+    Route::delete('/destroy/{id}', [ContactController::class, 'destroy_forever']);
 });
 
 

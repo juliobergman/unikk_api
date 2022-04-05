@@ -109,4 +109,17 @@ class PeccController extends Controller
         }
         return new JsonResponse(['message' => 'Request Failed to Complete'], 422);
     }
+
+    public function destroy_forever(Request $request)
+    {
+        $pecc = Pecc::withTrashed()
+        ->where('id', $request->id)
+        ->first();
+
+        $deleted = $pecc->forceDelete();
+        if($deleted){
+            return new JsonResponse(['message' => 'Company Permanently Deleted'], 200);
+        }
+        return new JsonResponse(['message' => 'Request Failed to Complete'], 422);
+    }
 }

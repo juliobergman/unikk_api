@@ -12,10 +12,14 @@ class Contact extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'public',
         'name',
-        'currency_id',
-        'company_id',
-        'type',
+        'company',
+        'email',
+        'phone',
+        'address',
+        'notes',
+        'profile_pic',
     ];
 
     protected $hidden = [

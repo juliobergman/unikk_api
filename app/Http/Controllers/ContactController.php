@@ -21,7 +21,7 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'public' => ['exists:companies,id'],
+            'public' => [],
             'name' => ['required'],
             'company' => [],
             'email' => ['email'],
@@ -38,28 +38,20 @@ class ContactController extends Controller
             'phone' => $request->phone,
             'address' => $request->address,
             'notes' => $request->notes,
-            'profile_pic' => '/storage/factory/avatar/misc/avatar-user.jpg',
             'created_at' => now(),
             'updated_at' => now(),
         ];
 
         $stored = $request->user()->contact()->create($contact);
         if($stored){
-            return new JsonResponse(['message' => 'New Contact Added', 'contact' => $contact], 201);
+            return new JsonResponse(['message' => 'New Contact Added', 'contact' => $stored], 201);
         }
         return new JsonResponse(['message' => 'Request Failed to Complete'], 422);
     }
 
     public function show(Request $request, Contact $contact)
     { 
-        $memberships = Membership::where('user_id', $request->user()->id)
-        ->where('company_id', $contact->public)
-        ->count();
-
-        if(!$memberships){
-            return new JsonResponse(['message' => 'No Contact has been found.'], 404);
-        }
-        if(!$contact->is_public){
+        if(!$contact->is_public && !$contact->is_owned){
             return new JsonResponse(['message' => 'No Contact has been found.'], 404);
         }
         if($contact->is_public || $contact->is_owned){
@@ -75,7 +67,7 @@ class ContactController extends Controller
         }
 
         $request->validate([
-            'public' => ['exists:companies,id'],
+            'public' => [],
             'name' => ['required'],
             'company' => [],
             'email' => ['email'],
@@ -92,7 +84,6 @@ class ContactController extends Controller
             'phone' => $request->phone,
             'address' => $request->address,
             'notes' => $request->notes,
-            'profile_pic' => '/storage/factory/avatar/misc/avatar-user.jpg',
             'created_at' => now(),
             'updated_at' => now(),
         ];
@@ -144,6 +135,19 @@ class ContactController extends Controller
         $restored = $contact->restore();
         if($restored){
             return new JsonResponse(['message' => 'Contact Restored'], 200);
+        }
+        return new JsonResponse(['message' => 'Request Failed to Complete'], 422);
+    }
+
+    public function destroy_forever(Request $request)
+    {
+        $contact = Contact::withTrashed()
+        ->where('id', $request->id)
+        ->first();
+
+        $deleted = $contact->forceDelete();
+        if($deleted){
+            return new JsonResponse(['message' => 'Contact Permanently Deleted'], 200);
         }
         return new JsonResponse(['message' => 'Request Failed to Complete'], 422);
     }

@@ -37,7 +37,30 @@ class UserSeeder extends Seeder
             'profile_pic' => '/storage/factory/avatar/misc/stormtrooper.jpg',
             'country' => 'VE',
         ]))
-        ->has(Contact::factory(3))
+        ->has(Contact::factory(30)
+        ->state(new Sequence(
+            ['profile_pic' => '/storage/factory/avatar/male/avatar-1.jpg'],
+            ['profile_pic' => '/storage/factory/avatar/female/avatar-1.jpg'],
+            ['profile_pic' => '/storage/factory/avatar/male/avatar-2.jpg'],
+            ['profile_pic' => '/storage/factory/avatar/female/avatar-2.jpg'],
+            ['profile_pic' => '/storage/factory/avatar/male/avatar-3.jpg'],
+            ['profile_pic' => '/storage/factory/avatar/female/avatar-3.jpg'],
+            ['profile_pic' => '/storage/factory/avatar/male/avatar-4.jpg'],
+            ['profile_pic' => '/storage/factory/avatar/female/avatar-4.jpg'],
+            ['profile_pic' => '/storage/factory/avatar/male/avatar-5.jpg'],
+            ['profile_pic' => '/storage/factory/avatar/female/avatar-5.jpg'],
+            ['profile_pic' => '/storage/factory/avatar/male/avatar-6.jpg'],
+            ['profile_pic' => '/storage/factory/avatar/female/avatar-6.jpg'],
+            ['profile_pic' => '/storage/factory/avatar/male/avatar-7.jpg'],
+            ['profile_pic' => '/storage/factory/avatar/female/avatar-7.jpg'],
+            ['profile_pic' => '/storage/factory/avatar/male/avatar-8.jpg'],
+            ['profile_pic' => '/storage/factory/avatar/female/avatar-8.jpg'],
+            ['profile_pic' => '/storage/factory/avatar/male/avatar-9.jpg'],
+            ['profile_pic' => '/storage/factory/avatar/female/avatar-9.jpg'],
+            ['profile_pic' => '/storage/factory/avatar/male/avatar-10.jpg'],
+            ['profile_pic' => '/storage/factory/avatar/female/avatar-10.jpg'],
+        ))
+        )
         ->has(Membership::factory(2)->state(new Sequence(
             [
                 'company_id' => 1,
@@ -53,7 +76,7 @@ class UserSeeder extends Seeder
         )
         ->create();
 
-        User::factory(10)
+        User::factory(6)
         ->state([
             'email_verified_at' => now()
         ])

@@ -19,7 +19,7 @@ class CreateContactsTable extends Migration
 
             $table->unsignedBigInteger('public')->nullable();
             // $table->foreign('public')->references('id')->on('companies');
-
+            
             $table->string('name');
             $table->string('company')->nullable();
             $table->string('email')->nullable();
