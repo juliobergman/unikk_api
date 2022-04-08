@@ -29,6 +29,7 @@ class Contact extends Model
     protected $appends = [
         'is_owned',
         'is_public',
+        'avatar'
     ];
 
     public function user()
@@ -44,5 +45,9 @@ class Contact extends Model
     public function getIsPublicAttribute()
     {
         return $this->public ? true : false;
+    }
+    public function getAvatarAttribute()
+    {
+        return $this->profile_pic ? $this->profile_pic : '/storage/factory/avatar/misc/avatar-user.jpg';
     }
 }

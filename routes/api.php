@@ -27,7 +27,7 @@ use App\Http\Controllers\TestController;
 
 // Auth
 Route::post('/login', [AuthController::class, 'login']);
-Route::middleware('auth:sanctum')->get('/logout', [AuthController::class, 'logout']);
+Route::get('/logout', [AuthController::class, 'logout']);
 Route::middleware('auth:sanctum')->post('/password/set', [AuthController::class, 'set_password']);
 // Password Reset
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->middleware('guest')->name('password.email');
@@ -86,18 +86,20 @@ Route::middleware('auth:sanctum')->prefix('/membership')->group(function(){
 Route::middleware('auth:sanctum')->prefix('/upload')->group(function(){
     Route::post('/avatar/user', [UploadController::class, 'useravatar']);
     Route::post('/avatar/company/{company}', [UploadController::class, 'companyavatar']);
+    Route::post('/avatar/contact/{contact}', [UploadController::class, 'contactavatar']);
+    Route::post('/avatar/pecc/{pecc}', [UploadController::class, 'peccavatar']);
 });
 
 // Pecc
 Route::middleware('auth:sanctum')->prefix('/pecc')->group(function(){
     Route::get('/company/{id}', [PeccController::class, 'index']);
-    Route::get('/trashed', [PeccController::class, 'trashed']);
+    Route::get('/trashed/{company}', [PeccController::class, 'trashed']);
     Route::get('/show/{pecc}', [PeccController::class, 'show']);
     Route::post('/store', [PeccController::class, 'store']);
     Route::put('/update/{pecc}', [PeccController::class, 'update']);
     Route::get('/destroy/{pecc}', [PeccController::class, 'destroy']);
     Route::get('/restore/{pecc}', [PeccController::class, 'restore']);
-    Route::delete('/destroy/{id}', [ContactController::class, 'destroy_forever']);
+    Route::delete('/destroy/{id}', [PeccController::class, 'destroy_forever']);
 });
 
 // Contacts

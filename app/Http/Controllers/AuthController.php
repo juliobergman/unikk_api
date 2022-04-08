@@ -45,7 +45,21 @@ class AuthController extends Controller
     public function logout(Request $request)
     {   
         $user = $request->user();
-        $user->tokens()->where('id', '!=', 1)->delete();
+        if(!$user){
+            return new JsonResponse([
+                'title' => 'Success',
+                'message' => 'User not Found',
+            ], 200);
+        }
+        $tokens = $user->tokens()->where('id', '!=', 1)->count();
+        if($tokens){
+            $user->tokens()->where('id', '!=', 1)->delete();
+        }
+        return new JsonResponse([
+            'title' => 'Success',
+            'message' => 'Logout Succesfully',
+        ], 200);
+
     }
 
     public function set_password(Request $request)

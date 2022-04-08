@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Pecc;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -9,16 +10,56 @@ use Illuminate\Http\JsonResponse;
 class PeccController extends Controller
 {
 
+    public $data_select = [
+        // Peccs
+        'peccs.id',
+        'peccs.company_id',
+        'peccs.user_id',
+        'peccs.name',
+        'peccs.type',
+        'peccs.region',
+        'peccs.based',
+        'peccs.main_countries',
+        'peccs.main_cities',
+        'peccs.sector',
+        'peccs.geo_focus',
+        'peccs.logo',
+        'peccs.notes',
+        'peccs.deleted_at',
+        'peccs.created_at',
+        'peccs.updated_at',
+        // Country
+        'countries.name as country_name',
+        'countries.region as country_region',
+        'countries.subregion as country_subregion',
+        'countries.latitude as country_latitude',
+        'countries.longitude as country_longitude',
+    ];
+    
     public function index($id)
     {
-        return Pecc::where('company_id', $id)->get();
+        $peccs = Pecc::query();
+        // Where
+        $peccs->where('company_id', $id);
+        // Selects
+        $peccs->select($this->data_select);
+        // Join
+        $peccs->leftJoin('countries', 'peccs.based', '=', 'countries.iso2');
+        // $peccs->limit(5);
+        $peccs->orderBy('id','desc');
+        return $peccs->get();
     }
 
     public function store(Request $request)
     {
+        $request->validate([
+            'company_id' => ['required'],
+            'name' => ['required'],
+        ]);
+        
         $pecc = [
             'company_id' => $request->company_id,
-            'fund' => $request->fund,
+            'name' => $request->name,
             'type' => $request->type,
             'region' => $request->region,
             'based' => $request->based,
@@ -41,14 +82,21 @@ class PeccController extends Controller
     }
 
     public function show(Pecc $pecc)
-    { 
-        return $pecc;   
+    {
+        $peccs = Pecc::query();
+        // Where
+        $peccs->where('peccs.id', $pecc->id);
+        // Selects
+        $peccs->select($this->data_select);
+        // Join
+        $peccs->leftJoin('countries', 'peccs.based', '=', 'countries.iso2');
+        return $peccs->first();
     }
 
     public function update(Request $request, Pecc $pecc)
     {   
         $update = [
-            'fund' => $request->fund,
+            'name' => $request->name,
             'type' => $request->type,
             'region' => $request->region,
             'based' => $request->based,
@@ -63,7 +111,8 @@ class PeccController extends Controller
 
         $updated = Pecc::where('id', $pecc->id)->update($update);
         if($updated){
-            return new JsonResponse(['message' => 'PECC Updated', 'pecc' => $update], 200);
+            $peccRet = $this->show($pecc);
+            return new JsonResponse(['message' => 'PECC Updated', 'pecc' => $peccRet], 200);
         }
         return new JsonResponse(['message' => 'Request Failed to Complete'], 422);
     }
@@ -84,11 +133,12 @@ class PeccController extends Controller
         return new JsonResponse(['message' => 'Request Failed to Complete'], 422);
     }
 
-    public function trashed(Request $request)
+    public function trashed(Request $request, Company $company)
     {
-        $user = $request->user();
         $pecc = Pecc::query();
-        $pecc->where('user_id', $user->id);
+        $pecc->where('company_id', $company->id);
+        $pecc->select($this->data_select);
+        $pecc->leftJoin('countries', 'peccs.based', '=', 'countries.iso2');
         $pecc->onlyTrashed();
         return $pecc->get();
     }

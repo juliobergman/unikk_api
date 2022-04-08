@@ -13,7 +13,7 @@ class Pecc extends Model
 
     protected $fillable = [
         'company_id',
-        'fund',
+        'name',
         'type',
         'region',
         'based',
@@ -26,6 +26,7 @@ class Pecc extends Model
 
     protected $appends = [
         'is_owned',
+        'avatar'
     ];
 
     public function user()
@@ -37,5 +38,9 @@ class Pecc extends Model
     public function getIsOwnedAttribute()
     {
         return Auth::user()->id === $this->user_id ? true : false;
+    }
+    public function getAvatarAttribute()
+    {
+        return $this->logo ? $this->logo : '/storage/factory/avatar/misc/avatar-company.jpg';
     }
 }

@@ -19,7 +19,7 @@ class CreatePeccsTable extends Migration
             $table->foreignId('company_id')->constrained();
             $table->foreignId('user_id')->constrained();
 
-            $table->string('fund')->nullable();
+            $table->string('name')->nullable();
             $table->string('type')->nullable();
             $table->text('region')->nullable();
             $table->string('based')->nullable();
