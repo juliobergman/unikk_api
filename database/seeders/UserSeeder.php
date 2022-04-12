@@ -76,7 +76,7 @@ class UserSeeder extends Seeder
         )
         ->create();
 
-        User::factory(25)
+        User::factory(1)
         ->state([
             'email_verified_at' => now()
         ])

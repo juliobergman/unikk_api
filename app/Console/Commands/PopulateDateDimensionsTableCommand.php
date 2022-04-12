@@ -52,7 +52,7 @@ class PopulateDateDimensionsTableCommand extends Command
 
         // Get the date range
         // @NOTE - update the start and end date as per your choice
-        $dates = CarbonPeriod::create('2017-01-01', '1 month', '2025-12-31');
+        $dates = CarbonPeriod::create('2022-01-01', '1 month', '2022-12-31');
 
         // For each dates create a transformed data
         foreach ($dates as $date) {

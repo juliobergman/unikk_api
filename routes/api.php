@@ -3,16 +3,19 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FactController;
+use App\Http\Controllers\PeccController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\MembershipController;
-use App\Http\Controllers\PeccController;
-use App\Http\Controllers\TestController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -117,8 +120,31 @@ Route::middleware('auth:sanctum')->prefix('/contact')->group(function(){
 
 
 
+// Financial Routes
 
+// Category
+Route::middleware('auth:sanctum')->prefix('/category')->group(function(){
+    Route::get('/{company}', [CategoryController::class, 'index']);
+    Route::get('/{company}/accounts', [CategoryController::class, 'accounts']);
+    Route::get('/show/{category}', [CategoryController::class, 'show']);
+    Route::post('/store', [CategoryController::class, 'store']);
+    Route::put('/update/{category}', [CategoryController::class, 'update']);
+    Route::delete('/destroy/{id}', [CategoryController::class, 'destroy']);
+});
 
+// Fact
+Route::middleware('auth:sanctum')->prefix('/fact')->group(function(){
+    Route::get('/{company}', [FactController::class, 'index']);
+    Route::get('/show/{fact}', [FactController::class, 'show']);
+    Route::post('/store', [FactController::class, 'store']);
+    Route::put('/update/{fact}', [FactController::class, 'update']);
+    Route::delete('/destroy/{id}', [FactController::class, 'destroy']);
+});
+
+// Report
+Route::middleware('auth:sanctum')->prefix('/report')->group(function(){
+    Route::get('/{company}/{type}/{year}/{depth}', [ReportController::class, 'index']);
+});
 
 
 
