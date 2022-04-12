@@ -84,7 +84,7 @@ class CategoryController extends Controller
         $report->with(['factsOffspring' => function($query) use ($af, $company, $year, $type){
             $query->where('company_id', $company->id);
             $query->whereYear('facts.date', $year);
-            $query->where('type', $af);
+            $query->where('section', $af);
         }]);
         $report->orderBy('sort');
         return $report->get()->makeHidden(['facts','facts_offspring']);;

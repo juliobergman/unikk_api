@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Controllers\ExtractController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
@@ -25,8 +27,8 @@ class Category extends Model
     ];
 
     protected $appends = [
-        'label',
-        // 'is_hidden',
+        // 'label',
+        // 'fact_data',
         'jan',
         'feb',
         'mar',
@@ -43,8 +45,9 @@ class Category extends Model
         'nov',
         'dec',
         'qr4',
-        'year',
-        'facts'
+        'yar',
+        'branch',
+
     ];
     // Attributes
     public function getLabelAttribute()
@@ -52,136 +55,118 @@ class Category extends Model
         return $this->name;
     }
 
-    protected function getAmount($selector = null)
-    {
-        $amount = $this->facts->map(function ($item, $key) use ($selector) {
-            if($item->month == $selector){
-                return $item;
-            }
-            return 0;
-        });
-        return $amount;
-    }
-
-    // Amount Atribbutes
-    public function getIsHiddenAttribute()
-    {
-        return $this->facts->sum('amount') <= 0 ? true : false;
-    }
-
     public function getJanAttribute()
     {  
-        return $this->facts
+        return $this->fact_data
         ->where('month', 1)->sum('amount');
     }
     public function getFebAttribute()
     {  
-        return $this->facts
+        return $this->fact_data
             ->where('month', 2)->sum('amount');
     }
     public function getMarAttribute()
     {  
-        return $this->facts
+        return $this->fact_data
             ->where('month', 3)->sum('amount');
     }
     public function getQr1Attribute()
     {  
-        return $this->facts
+        return $this->fact_data
             ->where('quarter', 1)->sum('amount');
     }
     public function getAprAttribute()
     {  
-        return $this->facts
+        return $this->fact_data
             ->where('month', 4)->sum('amount');
     }
     public function getMayAttribute()
     {  
-        return $this->facts
+        return $this->fact_data
             ->where('month', 5)->sum('amount');
     }
     public function getJunAttribute()
     {  
-        return $this->facts
+        return $this->fact_data
             ->where('month', 6)->sum('amount');
     }
     public function getQr2Attribute()
     {  
-        return $this->facts
+        return $this->fact_data
             ->where('quarter', 2)->sum('amount');
     }
     public function getJulAttribute()
     {  
-        return $this->facts
+        return $this->fact_data
             ->where('month', 7)->sum('amount');
     }
     public function getAugAttribute()
     {  
-        return $this->facts
+        return $this->fact_data
             ->where('month', 8)->sum('amount');
     }
     public function getSepAttribute()
     {  
-        return $this->facts
+        return $this->fact_data
             ->where('month', 9)->sum('amount');
     }
     public function getQr3Attribute()
     {  
-        return $this->facts
+        return $this->fact_data
             ->where('quarter', 3)->sum('amount');
     }
     public function getOctAttribute()
     {  
-        return $this->facts
+        return $this->fact_data
             ->where('month', 10)->sum('amount');
     }
     public function getNovAttribute()
     {  
-        return $this->facts
+        return $this->fact_data
             ->where('month', 11)->sum('amount');
     }
     public function getDecAttribute()
     {  
-        return $this->facts
+        return $this->fact_data
             ->where('month', 12)->sum('amount');
     }
     public function getQr4Attribute()
     {  
-        return $this->facts
+        return $this->fact_data
             ->where('quarter', 4)->sum('amount');
     }
-    public function getYearAttribute()
+    public function getYarAttribute()
     {  
-        return $this->facts->sum('amount');
+        return $this->fact_data->sum('amount');
     }
 
-    public function getFactsAttribute()
+    public function getBranchAttribute()
+    {  
+        $ra = $this->rootAncestor();
+        $branch = null;
+        if($ra->count()){
+            $branch = $ra->pluck('name');
+            $branch = $branch[0];
+        }
+        return $branch;
+    }
+
+    public function getFactDataAttribute()
     {
-        $ids = $this->factsOffspring->modelKeys();
-        $facts = Fact::whereIn('facts.id', $ids)
-        ->leftJoin('date_dimensions', 'facts.date', '=', 'date_dimensions.date')
-        ->select([
-            'facts.id',
-            'facts.amount',
-            'date_dimensions.month',
-            'date_dimensions.quarter'
-        ])
-        ->get();
-        return $facts;
+        return Fact::whereIn('facts.id', $this->facts->pluck('id'))->leftJoin('date_dimensions', 'facts.date', '=', 'date_dimensions.date')->get();
     }
 
     // Relationships
-    // public function facts()
-    // {
-    //     return $this->factsOffspring()->modelKeys();
-    //     // return $this->hasMany(Fact::class)->leftJoin('date_dimensions', 'facts.date', '=', 'date_dimensions.date');
-    // }
-
-    public function factsOffspring()
+    public function facts()
     {
         return $this->hasManyOfDescendantsAndSelf(Fact::class);
     }
-    public function offspring()
+    protected function fact_ids()
     {
-        return $this->children();
+        return $this->facts->pluck('section');
     }
+    // public function parent()
+    // {
+    //     return = $this->rootAncestor();
+    // }
 }

@@ -16,7 +16,7 @@ class CreateFactsTable extends Migration
         Schema::create('facts', function (Blueprint $table) {
             $table->id();
 
-            $table->enum('type', ['actual', 'forecast'])->default('actual');
+            $table->enum('section', ['actual', 'forecast'])->default('actual');
             $table->date('date')->foreign('date')->references('date')->on('date_dimensions');
             $table->foreignId('category_id')->foreign('category_id')->references('id')->on('categories');
             $table->foreignId('company_id')->constrained();

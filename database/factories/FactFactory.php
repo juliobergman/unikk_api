@@ -20,7 +20,7 @@ class FactFactory extends Factory
             'date' => DateDimension::all()->unique()->random()->date,
             'category_id' => Category::whereNotNull('account')->get()->unique()->random()->id,
             'company_id' => 1,
-            'amount' => rand(250, 450),
+            'amount' => 100,
         ];
     }
 }

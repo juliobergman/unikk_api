@@ -14,6 +14,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\ExtractIncomeController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\ReportController;
 
@@ -130,6 +131,7 @@ Route::middleware('auth:sanctum')->prefix('/category')->group(function(){
     Route::post('/store', [CategoryController::class, 'store']);
     Route::put('/update/{category}', [CategoryController::class, 'update']);
     Route::delete('/destroy/{id}', [CategoryController::class, 'destroy']);
+    Route::get('/report/{company}/{type}/{year}/{depth}', [CategoryController::class, 'report']);
 });
 
 // Fact
@@ -143,7 +145,13 @@ Route::middleware('auth:sanctum')->prefix('/fact')->group(function(){
 
 // Report
 Route::middleware('auth:sanctum')->prefix('/report')->group(function(){
-    Route::get('/{company}/{type}/{year}/{depth}', [ReportController::class, 'index']);
+    Route::get('/{company}/{type}/{year}/{depth}', [ReportController::class, 'report']);
+});
+
+
+// Report
+Route::middleware('auth:sanctum')->prefix('/extract')->group(function(){
+    Route::get('/income/{company}/{year}', [ExtractIncomeController::class, 'index']);
 });
 
 
