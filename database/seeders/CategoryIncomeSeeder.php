@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class CategorySeeder extends Seeder
+class CategoryIncomeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -24,7 +24,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => null,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 5,
+                'sort' => 0,
                 'account' => null,
             ],
             [
@@ -35,7 +35,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => null,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 6,
+                'sort' => 1,
                 'account' => null,
             ],
             [
@@ -46,7 +46,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => null,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 7,
+                'sort' => 2,
                 'account' => null,
             ],
             [
@@ -57,7 +57,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => null,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 8,
+                'sort' => 3,
                 'account' => null,
             ],
             [
@@ -68,7 +68,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => null,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 9,
+                'sort' => 4,
                 'account' => null,
             ],
             [
@@ -79,7 +79,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => null,
                 'group_id' => 3,
                 'type' => 'income',
-                'sort' => 10,
+                'sort' => 50,
                 'account' => null,
             ],
             [
@@ -90,7 +90,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => null,
                 'group_id' => 3,
                 'type' => 'income',
-                'sort' => 11,
+                'sort' => 61,
                 'account' => null,
             ],
             [
@@ -101,7 +101,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => null,
                 'group_id' => 3,
                 'type' => 'income',
-                'sort' => 12,
+                'sort' => 72,
                 'account' => null,
             ],
             [
@@ -112,7 +112,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => null,
                 'group_id' => 4,
                 'type' => 'income',
-                'sort' => 13,
+                'sort' => 83,
                 'account' => null,
             ],
             // Level 2
@@ -125,7 +125,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 1,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 14,
+                'sort' => 94,
                 'account' => null,
             ],
             [
@@ -136,7 +136,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 1,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 15,
+                'sort' => 105,
                 'account' => null,
             ],
             [
@@ -147,7 +147,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 1,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 16,
+                'sort' => 116,
                 'account' => null,
             ],
             [
@@ -158,7 +158,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 1,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 17,
+                'sort' => 127,
                 'account' => null,
             ],
             [
@@ -169,7 +169,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 1,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 18,
+                'sort' => 138,
                 'account' => null,
             ],
             [
@@ -180,7 +180,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 1,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 19,
+                'sort' => 149,
                 'account' => null,
             ],
             [
@@ -191,7 +191,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 1,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 20,
+                'sort' => 150,
                 'account' => null,
             ],
             [
@@ -202,7 +202,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 1,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 21,
+                'sort' => 161,
                 'account' => null,
             ],
             // Direct Operational Cost -> Parent 2
@@ -214,7 +214,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 2,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 22,
+                'sort' => 172,
                 'account' => null,
             ],
             [
@@ -225,7 +225,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 2,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 23,
+                'sort' => 183,
                 'account' => null,
             ],
             // Other Operational Cost -> Parent 3
@@ -237,7 +237,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 3,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 24,
+                'sort' => 194,
                 'account' => null,
             ],
             [
@@ -248,7 +248,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 3,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 25,
+                'sort' => 205,
                 'account' => null,
             ],
             [
@@ -259,10 +259,10 @@ class CategorySeeder extends Seeder
                 'parent_id' => 3,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 26,
+                'sort' => 216,
                 'account' => null,
             ],
-            // Operating Expenses -> Parent 4
+            // // Operating Expenses -> Parent 4
             [
                 'id' => 23,
                 'company_id' => 1,
@@ -271,7 +271,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 4,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 27,
+                'sort' => 227,
                 'account' => null,
             ],
             [
@@ -282,7 +282,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 4,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 28,
+                'sort' => 238,
                 'account' => null,
             ],
             [
@@ -293,7 +293,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 4,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 29,
+                'sort' => 249,
                 'account' => null,
             ],
             [
@@ -304,7 +304,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 4,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 30,
+                'sort' => 250,
                 'account' => null,
             ],
             [
@@ -315,7 +315,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 4,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 31,
+                'sort' => 261,
                 'account' => null,
             ],
             [
@@ -326,7 +326,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 4,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 32,
+                'sort' => 272,
                 'account' => null,
             ],
             [
@@ -337,7 +337,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 4,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 33,
+                'sort' => 283,
                 'account' => null,
             ],
             [
@@ -348,7 +348,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 4,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 34,
+                'sort' => 294,
                 'account' => null,
             ],
             // Depreciation and Amortization -> Parent 5
@@ -360,7 +360,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 5,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 35,
+                'sort' => 305,
                 'account' => null,
             ],
             // Financial Cost -> Parent 6
@@ -372,7 +372,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 6,
                 'group_id' => 3,
                 'type' => 'income',
-                'sort' => 36,
+                'sort' => 316,
                 'account' => null,
             ],
             // Other Income/Expenses -> Parent 7
@@ -384,7 +384,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 7,
                 'group_id' => 3,
                 'type' => 'income',
-                'sort' => 37,
+                'sort' => 327,
                 'account' => null,
             ],
             [
@@ -395,7 +395,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 7,
                 'group_id' => 3,
                 'type' => 'income',
-                'sort' => 38,
+                'sort' => 338,
                 'account' => null,
             ],
             // Non-company related expenditures/Income -> Parent 8
@@ -407,7 +407,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 8,
                 'group_id' => 3,
                 'type' => 'income',
-                'sort' => 39,
+                'sort' => 349,
                 'account' => null,
             ],
             [
@@ -418,7 +418,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 8,
                 'group_id' => 3,
                 'type' => 'income',
-                'sort' => 40,
+                'sort' => 350,
                 'account' => null,
             ],
             // Taxes -> Parent 9
@@ -430,7 +430,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 9,
                 'group_id' => 4,
                 'type' => 'income',
-                'sort' => 41,
+                'sort' => 361,
                 'account' => null,
             ],
             [
@@ -441,7 +441,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 9,
                 'group_id' => 4,
                 'type' => 'income',
-                'sort' => 42,
+                'sort' => 372,
                 'account' => null,
             ],
             // Accounting Codes
@@ -453,7 +453,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 10,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 43,
+                'sort' => 383,
                 'account' => 3400,
             ],
             [
@@ -464,7 +464,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 11,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 44,
+                'sort' => 394,
                 'account' => 3410,
             ],
             [
@@ -475,7 +475,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 11,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 45,
+                'sort' => 405,
                 'account' => 3415,
             ],
             [
@@ -486,7 +486,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 11,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 46,
+                'sort' => 416,
                 'account' => 3420,
             ],
             [
@@ -497,7 +497,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 12,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 47,
+                'sort' => 427,
                 'account' => 3425,
             ],
             [
@@ -508,7 +508,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 13,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 48,
+                'sort' => 438,
                 'account' => 3430,
             ],
             [
@@ -519,7 +519,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 13,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 49,
+                'sort' => 449,
                 'account' => 3435,
             ],
             [
@@ -530,7 +530,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 14,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 50,
+                'sort' => 450,
                 'account' => 3440,
             ],
             [
@@ -541,7 +541,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 14,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 51,
+                'sort' => 461,
                 'account' => 3445,
             ],
             [
@@ -552,7 +552,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 14,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 52,
+                'sort' => 472,
                 'account' => 3450,
             ],
             [
@@ -563,7 +563,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 15,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 53,
+                'sort' => 483,
                 'account' => 3455,
             ],
             [
@@ -574,7 +574,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 15,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 54,
+                'sort' => 494,
                 'account' => 3460,
             ],
             [
@@ -585,7 +585,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 16,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 55,
+                'sort' => 505,
                 'account' => 3465,
             ],
             [
@@ -596,7 +596,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 17,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 56,
+                'sort' => 516,
                 'account' => 3490,
             ],
             [
@@ -607,7 +607,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 17,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 57,
+                'sort' => 527,
                 'account' => 3491,
             ],
             [
@@ -618,7 +618,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 17,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 58,
+                'sort' => 538,
                 'account' => 3495,
             ],
             [
@@ -629,7 +629,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 18,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 59,
+                'sort' => 549,
                 'account' => 4400,
             ],
             [
@@ -640,7 +640,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 18,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 60,
+                'sort' => 550,
                 'account' => 4410,
             ],
             [
@@ -651,7 +651,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 18,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 61,
+                'sort' => 561,
                 'account' => 4415,
             ],
             [
@@ -662,7 +662,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 18,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 62,
+                'sort' => 572,
                 'account' => 4420,
             ],
             [
@@ -673,7 +673,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 18,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 63,
+                'sort' => 583,
                 'account' => 4425,
             ],
             [
@@ -684,7 +684,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 18,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 64,
+                'sort' => 594,
                 'account' => 4430,
             ],
             [
@@ -695,7 +695,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 18,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 65,
+                'sort' => 605,
                 'account' => 4435,
             ],
             [
@@ -706,7 +706,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 18,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 66,
+                'sort' => 616,
                 'account' => 4440,
             ],
             [
@@ -717,7 +717,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 19,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 67,
+                'sort' => 627,
                 'account' => 3600,
             ],
             [
@@ -728,7 +728,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 19,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 68,
+                'sort' => 638,
                 'account' => 3610,
             ],
             [
@@ -739,7 +739,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 19,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 69,
+                'sort' => 649,
                 'account' => 3615,
             ],
             [
@@ -750,7 +750,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 19,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 70,
+                'sort' => 650,
                 'account' => 3620,
             ],
             [
@@ -761,7 +761,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 20,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 71,
+                'sort' => 661,
                 'account' => 5400,
             ],
             [
@@ -772,7 +772,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 20,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 72,
+                'sort' => 672,
                 'account' => 5401,
             ],
             [
@@ -783,7 +783,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 20,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 73,
+                'sort' => 683,
                 'account' => 5402,
             ],
             [
@@ -794,7 +794,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 20,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 74,
+                'sort' => 694,
                 'account' => 5403,
             ],
             [
@@ -805,7 +805,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 20,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 75,
+                'sort' => 705,
                 'account' => 5405,
             ],
             [
@@ -816,7 +816,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 20,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 76,
+                'sort' => 716,
                 'account' => 5409,
             ],
             [
@@ -827,7 +827,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 21,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 77,
+                'sort' => 727,
                 'account' => 5700,
             ],
             [
@@ -838,7 +838,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 21,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 78,
+                'sort' => 738,
                 'account' => 5710,
             ],
             [
@@ -849,7 +849,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 21,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 79,
+                'sort' => 749,
                 'account' => 5720,
             ],
             [
@@ -860,7 +860,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 21,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 80,
+                'sort' => 750,
                 'account' => 5730,
             ],
             [
@@ -871,7 +871,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 21,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 81,
+                'sort' => 761,
                 'account' => 5740,
             ],
             [
@@ -882,7 +882,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 21,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 82,
+                'sort' => 772,
                 'account' => 5790,
             ],
             [
@@ -893,7 +893,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 22,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 83,
+                'sort' => 783,
                 'account' => 5800,
             ],
             [
@@ -904,7 +904,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 22,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 84,
+                'sort' => 794,
                 'account' => 5810,
             ],
             [
@@ -915,7 +915,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 22,
                 'group_id' => 1,
                 'type' => 'income',
-                'sort' => 85,
+                'sort' => 805,
                 'account' => 5880,
             ],
             [
@@ -926,7 +926,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 23,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 86,
+                'sort' => 816,
                 'account' => 6000,
             ],
             [
@@ -937,7 +937,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 24,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 87,
+                'sort' => 827,
                 'account' => 6101,
             ],
             [
@@ -948,7 +948,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 24,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 88,
+                'sort' => 838,
                 'account' => 6160,
             ],
             [
@@ -959,7 +959,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 25,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 89,
+                'sort' => 849,
                 'account' => 6200,
             ],
             [
@@ -970,7 +970,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 25,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 90,
+                'sort' => 850,
                 'account' => 6210,
             ],
             [
@@ -981,7 +981,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 25,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 91,
+                'sort' => 861,
                 'account' => 6220,
             ],
             [
@@ -992,7 +992,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 25,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 92,
+                'sort' => 872,
                 'account' => 6260,
             ],
             [
@@ -1003,7 +1003,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 25,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 93,
+                'sort' => 883,
                 'account' => 6270,
             ],
             [
@@ -1014,7 +1014,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 26,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 94,
+                'sort' => 894,
                 'account' => 6300,
             ],
             [
@@ -1025,7 +1025,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 26,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 95,
+                'sort' => 905,
                 'account' => 6360,
             ],
             [
@@ -1036,7 +1036,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 27,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 96,
+                'sort' => 916,
                 'account' => 6400,
             ],
             [
@@ -1047,7 +1047,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 28,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 97,
+                'sort' => 927,
                 'account' => 6500,
             ],
             [
@@ -1058,7 +1058,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 28,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 98,
+                'sort' => 938,
                 'account' => 6503,
             ],
             [
@@ -1069,7 +1069,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 28,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 99,
+                'sort' => 949,
                 'account' => 6510,
             ],
             [
@@ -1080,7 +1080,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 28,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 100,
+                'sort' => 9500,
                 'account' => 6513,
             ],
             [
@@ -1091,7 +1091,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 28,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 101,
+                'sort' => 9601,
                 'account' => 6520,
             ],
             [
@@ -1102,7 +1102,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 28,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 102,
+                'sort' => 9702,
                 'account' => 6530,
             ],
             [
@@ -1113,7 +1113,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 28,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 103,
+                'sort' => 9803,
                 'account' => 6531,
             ],
             [
@@ -1124,7 +1124,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 28,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 104,
+                'sort' => 9904,
                 'account' => 6532,
             ],
             [
@@ -1135,7 +1135,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 28,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 105,
+                'sort' => 10005,
                 'account' => 6533,
             ],
             [
@@ -1146,7 +1146,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 28,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 106,
+                'sort' => 10106,
                 'account' => 6540,
             ],
             [
@@ -1157,7 +1157,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 28,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 107,
+                'sort' => 10207,
                 'account' => 6550,
             ],
             [
@@ -1168,7 +1168,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 28,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 108,
+                'sort' => 10308,
                 'account' => 6560,
             ],
             [
@@ -1179,7 +1179,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 28,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 109,
+                'sort' => 10409,
                 'account' => 6570,
             ],
             [
@@ -1190,7 +1190,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 29,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 110,
+                'sort' => 10510,
                 'account' => 6600,
             ],
             [
@@ -1201,7 +1201,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 29,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 111,
+                'sort' => 10611,
                 'account' => 6610,
             ],
             [
@@ -1212,7 +1212,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 29,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 112,
+                'sort' => 10712,
                 'account' => 6620,
             ],
             [
@@ -1223,7 +1223,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 29,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 113,
+                'sort' => 10813,
                 'account' => 6630,
             ],
             [
@@ -1234,7 +1234,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 29,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 114,
+                'sort' => 10914,
                 'account' => 6640,
             ],
             [
@@ -1245,7 +1245,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 29,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 115,
+                'sort' => 11015,
                 'account' => 6641,
             ],
             [
@@ -1256,7 +1256,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 29,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 116,
+                'sort' => 11116,
                 'account' => 6642,
             ],
             [
@@ -1267,7 +1267,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 30,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 117,
+                'sort' => 11217,
                 'account' => 6700,
             ],
             [
@@ -1278,7 +1278,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 31,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 118,
+                'sort' => 11318,
                 'account' => 6800,
             ],
             [
@@ -1289,7 +1289,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 31,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 119,
+                'sort' => 11419,
                 'account' => 6820,
             ],
             [
@@ -1300,7 +1300,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 31,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 120,
+                'sort' => 11520,
                 'account' => 6821,
             ],
             [
@@ -1311,7 +1311,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 31,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 121,
+                'sort' => 11621,
                 'account' => 6822,
             ],
             [
@@ -1322,7 +1322,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 31,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 122,
+                'sort' => 11722,
                 'account' => 6823,
             ],
             [
@@ -1333,7 +1333,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 31,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 123,
+                'sort' => 11823,
                 'account' => 6830,
             ],
             [
@@ -1344,7 +1344,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 31,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 124,
+                'sort' => 11924,
                 'account' => 6840,
             ],
             [
@@ -1355,7 +1355,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 31,
                 'group_id' => 2,
                 'type' => 'income',
-                'sort' => 125,
+                'sort' => 12025,
                 'account' => 6850,
             ],
             [
@@ -1366,7 +1366,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 32,
                 'group_id' => 3,
                 'type' => 'income',
-                'sort' => 126,
+                'sort' => 12126,
                 'account' => 6901,
             ],
             [
@@ -1377,7 +1377,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 32,
                 'group_id' => 3,
                 'type' => 'income',
-                'sort' => 127,
+                'sort' => 12227,
                 'account' => 6940,
             ],
             [
@@ -1388,7 +1388,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 32,
                 'group_id' => 3,
                 'type' => 'income',
-                'sort' => 128,
+                'sort' => 12328,
                 'account' => 6949,
             ],
             [
@@ -1399,7 +1399,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 33,
                 'group_id' => 3,
                 'type' => 'income',
-                'sort' => 129,
+                'sort' => 12429,
                 'account' => 7500,
             ],
             [
@@ -1410,7 +1410,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 33,
                 'group_id' => 3,
                 'type' => 'income',
-                'sort' => 130,
+                'sort' => 12530,
                 'account' => 7510,
             ],
             [
@@ -1421,7 +1421,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 34,
                 'group_id' => 3,
                 'type' => 'income',
-                'sort' => 131,
+                'sort' => 12631,
                 'account' => 7910,
             ],
             [
@@ -1432,7 +1432,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 35,
                 'group_id' => 3,
                 'type' => 'income',
-                'sort' => 132,
+                'sort' => 12732,
                 'account' => 8000,
             ],
             [
@@ -1443,7 +1443,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 36,
                 'group_id' => 3,
                 'type' => 'income',
-                'sort' => 133,
+                'sort' => 12833,
                 'account' => 8100,
             ],
             [
@@ -1454,7 +1454,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 37,
                 'group_id' => 4,
                 'type' => 'income',
-                'sort' => 134,
+                'sort' => 12934,
                 'account' => 8900,
             ],
             [
@@ -1465,7 +1465,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => 38,
                 'group_id' => 4,
                 'type' => 'income',
-                'sort' => 135,
+                'sort' => 13035,
                 'account' => 8901,
             ]
         ];

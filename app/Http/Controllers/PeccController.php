@@ -105,7 +105,6 @@ class PeccController extends Controller
             'sector' => $request->sector,
             'geo_focus' => $request->geo_focus,
             'notes' => $request->notes,
-            'created_at' => now(),
             'updated_at' => now(),
         ];
 

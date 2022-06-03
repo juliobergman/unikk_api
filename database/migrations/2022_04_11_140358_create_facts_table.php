@@ -21,8 +21,8 @@ class CreateFactsTable extends Migration
             $table->foreignId('category_id')->foreign('category_id')->references('id')->on('categories');
             $table->foreignId('company_id')->constrained();
             // Unique
-            // $table->unique(['code_id','date','report_id','company_id'], 'unicus');
-            $table->decimal('amount', 20,2,false);
+            $table->unique(['section','date','category_id','company_id'], 'unicus');
+            $table->decimal('amount', 20,2, false);
             $table->timestamps();
         });
     }

@@ -4,50 +4,42 @@ namespace App\Models;
 
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use phpDocumentor\Reflection\Types\Self_;
 use App\Http\Controllers\ExtractController;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 class Category extends Model
 {
-    use HasFactory, HasRecursiveRelationships;
+    use SoftDeletes, CascadeSoftDeletes, HasFactory, HasRecursiveRelationships;
 
     protected $fillable = [
         'name',
+        'format',
+        'account',
         'company_id',
-        'parent_id'
+        'parent_id',
+        'group_id',
+        'type',
+        'sort',
+        'created_at',
+        'updated_at',
     ];
 
     protected $hidden = [
         // 'default',
         'deleted_at',
+        'group'
     ];
 
     protected $casts = [
     ];
 
     protected $appends = [
-        // 'label',
-        // 'fact_data',
-        'jan',
-        'feb',
-        'mar',
-        'qr1',
-        'apr',
-        'may',
-        'jun',
-        'qr2',
-        'jul',
-        'aug',
-        'sep',
-        'qr3',
-        'oct',
-        'nov',
-        'dec',
-        'qr4',
-        'yar',
-        'branch',
-
+        'label',
+        'group_name',
     ];
     // Attributes
     public function getLabelAttribute()
@@ -55,118 +47,27 @@ class Category extends Model
         return $this->name;
     }
 
-    public function getJanAttribute()
-    {  
-        return $this->fact_data
-        ->where('month', 1)->sum('amount');
-    }
-    public function getFebAttribute()
-    {  
-        return $this->fact_data
-            ->where('month', 2)->sum('amount');
-    }
-    public function getMarAttribute()
-    {  
-        return $this->fact_data
-            ->where('month', 3)->sum('amount');
-    }
-    public function getQr1Attribute()
-    {  
-        return $this->fact_data
-            ->where('quarter', 1)->sum('amount');
-    }
-    public function getAprAttribute()
-    {  
-        return $this->fact_data
-            ->where('month', 4)->sum('amount');
-    }
-    public function getMayAttribute()
-    {  
-        return $this->fact_data
-            ->where('month', 5)->sum('amount');
-    }
-    public function getJunAttribute()
-    {  
-        return $this->fact_data
-            ->where('month', 6)->sum('amount');
-    }
-    public function getQr2Attribute()
-    {  
-        return $this->fact_data
-            ->where('quarter', 2)->sum('amount');
-    }
-    public function getJulAttribute()
-    {  
-        return $this->fact_data
-            ->where('month', 7)->sum('amount');
-    }
-    public function getAugAttribute()
-    {  
-        return $this->fact_data
-            ->where('month', 8)->sum('amount');
-    }
-    public function getSepAttribute()
-    {  
-        return $this->fact_data
-            ->where('month', 9)->sum('amount');
-    }
-    public function getQr3Attribute()
-    {  
-        return $this->fact_data
-            ->where('quarter', 3)->sum('amount');
-    }
-    public function getOctAttribute()
-    {  
-        return $this->fact_data
-            ->where('month', 10)->sum('amount');
-    }
-    public function getNovAttribute()
-    {  
-        return $this->fact_data
-            ->where('month', 11)->sum('amount');
-    }
-    public function getDecAttribute()
-    {  
-        return $this->fact_data
-            ->where('month', 12)->sum('amount');
-    }
-    public function getQr4Attribute()
-    {  
-        return $this->fact_data
-            ->where('quarter', 4)->sum('amount');
-    }
-    public function getYarAttribute()
-    {  
-        return $this->fact_data->sum('amount');
-    }
-
-    public function getBranchAttribute()
-    {  
-        $ra = $this->rootAncestor();
-        $branch = null;
-        if($ra->count()){
-            $branch = $ra->pluck('name');
-            $branch = $branch[0];
-        }
-        return $branch;
-    }
-
-    public function getFactDataAttribute()
+    public function getGroupNameAttribute()
     {
-        return Fact::whereIn('facts.id', $this->facts->pluck('id'))->leftJoin('date_dimensions', 'facts.date', '=', 'date_dimensions.date')->get();
+        return $this->group->name;
     }
 
-    // Relationships
+
+    // relationships
+    public function group(){
+        return $this->belongsTo(Group::class);
+    }
+
     public function facts()
+    {
+        return $this->hasMany(Fact::class);
+    }
+    public function childrenFacts()
+    {
+        return $this->hasManyThrough(Fact::class, Category::class, 'parent_id', 'category_id','id','id');
+    }
+    public function adjFacts()
     {
         return $this->hasManyOfDescendantsAndSelf(Fact::class);
     }
-    protected function fact_ids()
-    {
-        return $this->facts->pluck('section');
-    }
-    // public function parent()
-    // {
-    //     return = $this->rootAncestor();
-    // }
 }

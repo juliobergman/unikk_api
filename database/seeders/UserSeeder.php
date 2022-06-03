@@ -34,8 +34,8 @@ class UserSeeder extends Seeder
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ])
         ->has(UserData::factory()->state([
-            'profile_pic' => '/storage/factory/avatar/misc/stormtrooper.jpg',
-            'country' => 'VE',
+            'profile_pic' => '/storage/factory/avatar/male/avatar-10.jpg',
+            'country' => 'CH',
         ]))
         ->has(Contact::factory(10)
         ->state(new Sequence(
@@ -76,7 +76,7 @@ class UserSeeder extends Seeder
         )
         ->create();
 
-        User::factory(1)
+        User::factory(20)
         ->state([
             'email_verified_at' => now()
         ])

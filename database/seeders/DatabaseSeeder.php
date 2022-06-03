@@ -28,8 +28,11 @@ class DatabaseSeeder extends Seeder
             ContactSeeder::class,
             // MembershipSeeder::class,
             TokenSeeder::class,
-            CategorySeeder::class,
-            FactSeeder::class,
+            GroupSeeder::class,
+            // CategorySeeder::class,
+            CategoryIncomeSeeder::class,
+            CategoryBalanceSeeder::class,
+            // FactSeeder::class,
         ]);
     }
 }

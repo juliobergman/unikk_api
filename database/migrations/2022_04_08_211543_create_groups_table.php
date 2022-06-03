@@ -17,7 +17,7 @@ class CreateGroupsTable extends Migration
             $table->id();
             $table->string('name');
             $table->enum('type', ['income', 'balance', 'ratio']);
-            $table->unsignedBigInteger('order')->default(1);
+            $table->unsignedBigInteger('sort')->default(1);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -7,79 +7,34 @@ use Illuminate\Http\Request;
 
 class DateDimensionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //
+        return DateDimension::all();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function years()
     {
-        //
+        $dates = collect(DateDimension::all());
+        return $dates->unique('year')->pluck('year');
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function structure()
     {
-        //
-    }
+        $data = collect(DateDimension::all());
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\DateDimension  $dateDimension
-     * @return \Illuminate\Http\Response
-     */
-    public function show(DateDimension $dateDimension)
-    {
-        //
-    }
+        // return $data;
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\DateDimension  $dateDimension
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(DateDimension $dateDimension)
-    {
-        //
-    }
+        $dates = $data->unique('date')->pluck('date');
+        $years = $data->unique('year')->pluck('year');
+        $months = $data->unique('month')->pluck('month');
+        $quarters = $data->unique('quarter')->pluck('quarter');
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\DateDimension  $dateDimension
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, DateDimension $dateDimension)
-    {
-        //
-    }
+        return [
+            'dates' => $dates,
+            'years' => $years,
+            'months' => $months,
+            'quarters' => $quarters,
+        ];
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\DateDimension  $dateDimension
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(DateDimension $dateDimension)
-    {
-        //
     }
 }

@@ -20,12 +20,23 @@ class CreateCategoriesTable extends Migration
             $table->string('format')->nullable();
             $table->unsignedBigInteger('account')->nullable();
             $table->foreignId('company_id')->nullable()->constrained();
+            // $table->unsignedBigInteger('parent_id')->nullable();
+            $table->unsignedBigInteger('group_id')->nullable();
+            
             $table->unsignedBigInteger('parent_id')->nullable();
+            $table->foreign('parent_id')
+            ->references('id')
+            ->on('categories')
+            ->constrained()
+            ->onDelete('cascade');
             
             $table->enum('type', ['income', 'balance', 'ratio']);
-            // $table->foreign('parent_id')->references('id')->on('categories');
-            
-            $table->unsignedBigInteger('sort')->default(1);
+
+            $table->unsignedBigInteger('sort')->nullable();
+
+            // $table->unique(['account','company_id'], 'unique_account');
+            // $table->unique(['name','company_id', 'parent_id'], 'unique_child');
+
             $table->softDeletes();
             $table->timestamps();
         });

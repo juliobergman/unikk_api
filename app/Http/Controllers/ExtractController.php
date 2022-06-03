@@ -6,6 +6,8 @@ use App\Models\Fact;
 use App\Models\Company;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class ExtractController extends Controller
 {
@@ -69,9 +71,65 @@ class ExtractController extends Controller
         // 'date_dimensions.first_day_of_next_year',
         // 'date_dimensions.dow_in_month',
     ];
-    
-    protected function getRow(Company $company, $year, $data, $depth = 0, $section, $class = '', $row = 0){
 
+    protected function getCategories($request, $company, $type, $year, $section, $group, $depth = 0)
+    {   
+        $schema = Category::query();
+        $schema->where('company_id', $company->id);
+        $schema->where('type', $type);
+        $schema->where('group_id', $group->id);
+        $schema->where('depth', $depth);
+        $schema->tree();
+        $schema->with(['facts' => function($q2) use ($section, $company, $year){
+            $q2->where('facts.company_id', $company->id);
+            $q2->whereYear('facts.date', $year);
+            $q2->where('facts.section', $section);
+        }]);
+        $schema->with(['descendants' => function($query) use ($section, $company, $year){
+            $query->with(['facts' => function($q2) use ($section, $company, $year){
+                $q2->where('facts.company_id', $company->id);
+                $q2->whereYear('facts.date', $year);
+                $q2->where('facts.section', $section);
+            }]);
+            // $query->where('facts.company_id', $company->id);
+            // $query->whereYear('facts.date', $year);
+            // $query->where('facts.section', $section);
+        }]);
+        // $schema->with('adjFacts');
+        $schema->orderBy('sort', 'asc');
+        $data = $schema->get()->toArray();
+
+        return $data;
+        
+        foreach ($data as $k1 => $v1) {
+            // return $v1;
+            $result[$k1]['group_id'] = $v1['group_id'];
+            $result[$k1]['group_name'] = $v1['group_name'];
+            $result[$k1]['id'] = $v1['id'];
+            $result[$k1]['type'] = $v1['type'];
+            $result[$k1]['depth'] = $v1['depth'];
+            $result[$k1]['level'] = $v1['depth'] + 1;
+            $result[$k1]['name'] = $v1['name'];
+            $result[$k1]['account'] = $v1['account'];
+            $result[$k1]['format'] = $v1['format'];
+            $result[$k1]['facts'] = [];
+            foreach ($v1['descendants'] as $k2 => $v2) {
+                $facts[] = $v2['facts'];
+            }
+            foreach ($facts as $k3 => $v3) {
+                if(isset($v3[0])){
+                    $result[$k1]['facts'][] = $v3[0];
+                }
+            }
+        }
+        return $result;
+    }
+
+    protected function getRow($data, Company $company, $type, $year, $section, $depth, $row, $header = false, $class = '')
+    {
+
+        // return $data;
+        
         if($class){
             $css = $class;
         }
@@ -84,106 +142,59 @@ class ExtractController extends Controller
         }
 
         $cssClass = trim($css);
-
+        $facts = collect([]);
+        // return $data;
+        if(isset($data['facts'])){
+            if(count($data['facts'])){
+                $facts = collect($data['facts']);
+            }
+            if(count($data['descendants'])){
+                foreach ($data['descendants'] as $key => $descendant) {
+                    if(count($descendant['facts'])){
+                        $facts = $facts->merge($descendant['facts']);
+                    }
+                }
+            }
+            // return $facts;
+        }
         return [
             'row' => $row,
             'company_id' => $company->id,
-            'category_id' => '',
-            'type' => $data->type,
+            'group_id' => $data['group_id'],
+            'group_name' => $data['group_name'],
+            'category_id' => $data['id'],
+            'type' => $data['type'],
             'year' => $year,
-            'depth' => $depth,
+            'depth' => $data['depth'],
+            'level' => $data['depth'] + 1,
             'section' => $section,
-            'name' => $data->name,
-            'account' => $data->account,
-            'result_field' => '',
-            'format' => $data->format,
-            'branch' => $data->branch,
+            'name' => $header ? $data['group_name'] : $data['name'],
+            'account' => $data['account'],
+            // 'result_field' => '',
+            'format' => $data['format'],
+            // 'branch' => $data['branch'],
             'row_class' => $cssClass,
-            'jan' => $data->jan,
-            'feb' => $data->feb,
-            'mar' => $data->mar,
-            'qr1' => $data->qr1,
-            'apr' => $data->apr,
-            'may' => $data->may,
-            'jun' => $data->jun,
-            'qr2' => $data->qr2,
-            'jul' => $data->jul,
-            'aug' => $data->aug,
-            'sep' => $data->sep,
-            'qr3' => $data->qr3,
-            'oct' => $data->oct,
-            'nov' => $data->nov,
-            'dec' => $data->dec,
-            'qr4' => $data->qr4,
-            'yar' => $data->yar,
-            'is_hidden' => $data->yar ? false : true,
+            'jan' => $facts->where('year', $year)->where('month', 1)->sum('amount'),
+            'feb' => $facts->where('year', $year)->where('month', 2)->sum('amount'),
+            'mar' => $facts->where('year', $year)->where('month', 3)->sum('amount'),
+            'qr1' => $facts->where('year', $year)->where('quarter', 1)->sum('amount'),
+            'apr' => $facts->where('year', $year)->where('month', 4)->sum('amount'),
+            'may' => $facts->where('year', $year)->where('month', 5)->sum('amount'),
+            'jun' => $facts->where('year', $year)->where('month', 6)->sum('amount'),
+            'qr2' => $facts->where('year', $year)->where('quarter', 2)->sum('amount'),
+            'jul' => $facts->where('year', $year)->where('month', 7)->sum('amount'),
+            'aug' => $facts->where('year', $year)->where('month', 8)->sum('amount'),
+            'sep' => $facts->where('year', $year)->where('month', 9)->sum('amount'),
+            'qr3' => $facts->where('year', $year)->where('quarter', 3)->sum('amount'),
+            'oct' => $facts->where('year', $year)->where('month', 10)->sum('amount'),
+            'nov' => $facts->where('year', $year)->where('month', 11)->sum('amount'),
+            'dec' => $facts->where('year', $year)->where('month', 12)->sum('amount'),
+            'qr4' => $facts->where('year', $year)->where('quarter', 4)->sum('amount'),
+            'yar' => $facts->where('year', $year)->sum('amount'),
+            'is_hidden' => $facts->where('year', $year)->sum('amount') ? false : true,
+            'required' => $header ? true : false
+            // 'data' => $facts
         ];
     }
     
-    protected function tree(Company $company, $year, $type, $section)
-    {
-        $group = Category::query();
-        $group->where('company_id', $company->id);
-        $group->where('type', $type);
-        $group->isRoot();
-        $group->depthFirst();
-        $group->tree();
-        // $group->with('rootAncestor');
-        $group->with(['facts' => function($query) use ($section, $company, $year, $type){
-            $query->where('company_id', $company->id);
-            $query->whereYear('facts.date', $year);
-            $query->where('section', $section);
-        }]);
-        $group->with(['facts' => function($query) use ($section, $company, $year, $type){
-            $query->where('company_id', $company->id);
-            $query->whereYear('facts.date', $year);
-            $query->where('section', $section);
-        }]);
-        // $group->with(['factsOffspring' => function($query) use ($af, $company, $year, $type){
-        //     $query->where('company_id', $company->id);
-        //     $query->whereYear('facts.date', $year);
-        //     $query->where('type', $af);
-        // }]);
-        $group->with(['children' => function($q1) use ($company, $year, $section){
-            // $q1->with('rootAncestor');
-            $q1->with(['facts' => function($q2) use ($company, $year, $section){
-                $q2->where('company_id', $company->id);
-                $q2->whereYear('facts.date', $year);
-                $q2->where('section', $section);
-            }]);
-            
-            $q1->with(['children' => function($q2) use ($company, $year, $section){
-                // $q2->with('rootAncestor');
-                $q2->with(['facts' => function($q3) use ($company, $year, $section){
-                    $q3->where('company_id', $company->id);
-                    $q3->whereYear('facts.date', $year);
-                    $q3->where('section', $section);
-                }]);
-
-                $q2->with(['children' => function($q3) use ($company, $year, $section){
-                    // $q3->with('rootAncestor');
-                    $q3->with(['facts' => function($q4) use ($company, $year, $section){
-                        $q4->where('company_id', $company->id);
-                        $q4->whereYear('facts.date', $year);
-                        $q4->where('section', $section);
-                    }]);
-                }]);
-            }]);
-
-        }]);
-        // $group->with(['descendants' => function($query) use ($company, $year, $section){
-        //     $query->with(['facts' => function($qry) use ($company, $year, $section){
-        //         $qry->where('company_id', $company->id);
-        //         $qry->whereYear('facts.date', $year);
-        //         $qry->where('section', $section);
-        //     }]);
-        // }]);
-        // $group->with(['facts' => function($qry) use ($company, $year, $section){
-        //     $qry->where('company_id', $company->id);
-        //     $qry->whereYear('facts.date', $year);
-        //     $qry->where('section', $section);
-        // }]);
-        $group->orderBy('sort');
-        return $group->get();
-    }
 }

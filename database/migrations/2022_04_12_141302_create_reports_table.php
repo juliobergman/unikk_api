@@ -19,23 +19,23 @@ class CreateReportsTable extends Migration
             $table->unsignedBigInteger('row')->nullable();
             // Keys
             $table->foreignId('company_id')->foreign('company_id')->references('id')->on('companies');
+            $table->unsignedBigInteger('group_id')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
-            $table->unsignedBigInteger('result_field')->nullable();
-
             $table->enum('type', ['income', 'balance', 'ratio']);
             $table->unsignedBigInteger('year');
-            $table->string('depth')->index();
+            $table->unsignedBigInteger('depth')->index();
+            $table->unsignedBigInteger('level')->index();
             $table->enum('section', ['actual', 'forecast']);
             // Unique
-            // $table->unique(['company_id'], 'unicus');
-
+            $table->unique(['company_id','type', 'depth', 'section', 'name', 'year'], 'unicus');
+            
             $table->string('name')->nullable();
             $table->unsignedBigInteger('account')->nullable();
-
-
+            
+            
+            $table->string('group_name')->nullable();
             $table->string('format')->default('currency');
-            $table->string('branch')->nullable();
-            $table->string('row_class');
+            $table->string('row_class')->nullable();
 
             $table->decimal('jan', 20,2,false)->nullable();
             $table->decimal('feb', 20,2,false)->nullable();
@@ -56,6 +56,7 @@ class CreateReportsTable extends Migration
             $table->decimal('yar', 20,2,false)->nullable();
 
             $table->boolean('is_hidden')->default(0);
+            $table->boolean('required')->default(0);
 
             $table->timestamps();
         });

@@ -7,16 +7,18 @@ use App\Http\Controllers\FactController;
 use App\Http\Controllers\PeccController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\TokenController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CurrencyController;
-use App\Http\Controllers\ExtractIncomeController;
+use App\Http\Controllers\DateDimensionController;
 use App\Http\Controllers\MembershipController;
-use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ExtractIncomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +42,11 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword'])->middle
 //Resources
 Route::get('/country', [CountryController::class, 'index']);
 Route::get('/currency', [CurrencyController::class, 'index']);
+Route::get('/dates', [DateDimensionController::class, 'index']);
+Route::prefix('/date')->group(function(){
+    Route::get('/years', [DateDimensionController::class, 'years']);
+    Route::get('/structure', [DateDimensionController::class, 'structure']);
+});
 
 // User
 Route::middleware('auth:sanctum')->post('/sanctum/token', [TokenController::class, 'token']);
@@ -122,22 +129,33 @@ Route::middleware('auth:sanctum')->prefix('/contact')->group(function(){
 
 
 // Financial Routes
+// Group
+Route::middleware('auth:sanctum')->prefix('/group')->group(function(){
+    Route::get('/', [GroupController::class, 'index']);
+});
 
 // Category
 Route::middleware('auth:sanctum')->prefix('/category')->group(function(){
-    Route::get('/{company}', [CategoryController::class, 'index']);
-    Route::get('/{company}/accounts', [CategoryController::class, 'accounts']);
-    Route::get('/show/{category}', [CategoryController::class, 'show']);
+    Route::get('/show/{id}', [CategoryController::class, 'show']);
     Route::post('/store', [CategoryController::class, 'store']);
+    Route::post('/sort', [CategoryController::class, 'sort']);
     Route::put('/update/{category}', [CategoryController::class, 'update']);
     Route::delete('/destroy/{id}', [CategoryController::class, 'destroy']);
+    Route::get('/{company}/all', [CategoryController::class, 'index']);
+    Route::get('/{company}/group/{type}', [CategoryController::class, 'groups']);
+    Route::get('/{company}/parentable', [CategoryController::class, 'parentable']);
+    Route::get('/{company}/leaves/{type}', [CategoryController::class, 'leaves']);
+    Route::get('/{company}/{type}/{tree?}', [CategoryController::class, 'tree']);
+    Route::get('/{company}/accounts', [CategoryController::class, 'accounts']);
     Route::get('/report/{company}/{type}/{year}/{depth}', [CategoryController::class, 'report']);
 });
 
 // Fact
 Route::middleware('auth:sanctum')->prefix('/fact')->group(function(){
     Route::get('/{company}', [FactController::class, 'index']);
+    Route::get('/set/{company}', [FactController::class, 'set']);
     Route::get('/show/{fact}', [FactController::class, 'show']);
+    Route::get('/edit/{company}/{type}/{year}/{section}', [FactController::class, 'edit']);
     Route::post('/store', [FactController::class, 'store']);
     Route::put('/update/{fact}', [FactController::class, 'update']);
     Route::delete('/destroy/{id}', [FactController::class, 'destroy']);
@@ -145,13 +163,14 @@ Route::middleware('auth:sanctum')->prefix('/fact')->group(function(){
 
 // Report
 Route::middleware('auth:sanctum')->prefix('/report')->group(function(){
-    Route::get('/{company}/{type}/{year}/{depth}', [ReportController::class, 'report']);
+    Route::get('/{company}/{type}/{year}/{section}/{level}', [ReportController::class, 'report']);
 });
 
 
-// Report
+// Extract
 Route::middleware('auth:sanctum')->prefix('/extract')->group(function(){
-    Route::get('/income/{company}/{year}', [ExtractIncomeController::class, 'index']);
+    Route::get('/{company}/{type}/{year}/{section}', [ExtractIncomeController::class, 'index']);
+    Route::post('/{company}/ebit', [ExtractIncomeController::class, 'ebit']);
 });
 
 
