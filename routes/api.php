@@ -16,9 +16,10 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CurrencyController;
-use App\Http\Controllers\DateDimensionController;
 use App\Http\Controllers\MembershipController;
+use App\Http\Controllers\DateDimensionController;
 use App\Http\Controllers\ExtractIncomeController;
+use App\Http\Controllers\FormulaLanding;
 
 /*
 |--------------------------------------------------------------------------
@@ -142,6 +143,7 @@ Route::middleware('auth:sanctum')->prefix('/category')->group(function(){
     Route::put('/update/{category}', [CategoryController::class, 'update']);
     Route::delete('/destroy/{id}', [CategoryController::class, 'destroy']);
     Route::get('/{company}/all', [CategoryController::class, 'index']);
+    Route::get('/{company}/grouped', [CategoryController::class, 'grouped']);
     Route::get('/{company}/group/{type}', [CategoryController::class, 'groups']);
     Route::get('/{company}/parentable', [CategoryController::class, 'parentable']);
     Route::get('/{company}/leaves/{type}', [CategoryController::class, 'leaves']);
@@ -170,12 +172,14 @@ Route::middleware('auth:sanctum')->prefix('/report')->group(function(){
 // Extract
 Route::middleware('auth:sanctum')->prefix('/extract')->group(function(){
     Route::get('/{company}/{type}/{year}/{section}', [ExtractIncomeController::class, 'index']);
-    Route::post('/{company}/ebit', [ExtractIncomeController::class, 'ebit']);
 });
-
-
-
-
+// Formula
+Route::middleware('auth:sanctum')->prefix('/formula')->group(function(){
+    Route::get('/{company}/get', [FormulaLanding::class, 'get']);
+    Route::get('/{company}/ebit/{year}/{section}', [FormulaLanding::class, 'ebit']);
+    Route::get('/{company}/ratio/{year}/{section}', [FormulaLanding::class, 'ratio']);
+    Route::post('/store', [FormulaLanding::class, 'store']);
+});
 
 
 

@@ -15,7 +15,7 @@ use App\Http\Controllers\FactController;
 
 class ExtractIncomeController extends ExtractController
 {
-    public function index(Request $request, Company $company, $type, $year, $section)
+    public function index(Company $company, $type, $year, $section)
     {        
         $groups = Group::where('type', $type)->get();
         $depths = [0,1,2];
@@ -25,7 +25,7 @@ class ExtractIncomeController extends ExtractController
             $total_f = [];
             $total_d = [];
             foreach ($groups as $group) {
-                $facts = $this->getCategories($request, $company, $type, $year, $section, $group, $depth);
+                $facts = $this->getCategories($company, $type, $year, $section, $group, $depth);
                 $facts_count = count($facts);
                 foreach ($facts as $k => $fact) {
                     // return  $this->getRow($fact, $company, $type, $year, $section, $depth, $row);
@@ -36,10 +36,10 @@ class ExtractIncomeController extends ExtractController
                     // Total Row
                     if($facts_count === ($k + 1)){
                         $fdata = $fact;
+                        $fdata['id'] = null;
                         $fdata['name'] = $fact['group_name'];
                         $fdata['facts'] = $total_f;
                         $fdata['descendants'] = $total_d;                  
-                        // return $fdata;                    
                         $data[] = $this->getRow($fdata, $company, $type, $year, $section, $depth, $row, true, 'header-row');
                         $row++;
                     }
@@ -59,6 +59,7 @@ class ExtractIncomeController extends ExtractController
             'year'
         ];
         $update = [
+            'category_id',
             'jan',
             'feb',
             'mar',
@@ -86,11 +87,10 @@ class ExtractIncomeController extends ExtractController
         foreach ($chunks as $chunk) {
             $inserts[] = Report::upsert($chunk->toArray(), $unique, $update);
         }
-        return new JsonResponse(['message' => 'Success', 'count' => array_sum($inserts)], 200);
-    }
 
-    public function ebit(Request $request, Company $company)
-    {
-        return $request->all();
+        (new FormulaLanding)->ebit($company, $year, $section);
+        (new FormulaLanding)->ratio($company, $year, $section);
+
+        return new JsonResponse(['message' => 'Success', 'count' => array_sum($inserts)], 200);
     }
 }

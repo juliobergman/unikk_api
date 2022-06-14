@@ -172,12 +172,3 @@ class FactController extends Controller
         
     }
 }
-
-// "id": 1,
-// "section": "actual",
-// "date": "2022-07-01",
-// "category_id": 39,
-// "company_id": 1,
-// "amount": "100.00",
-// "created_at": "2022-05-10T15:33:55.000000Z",
-// "updated_at": "2022-05-10T15:33:55.000000Z"

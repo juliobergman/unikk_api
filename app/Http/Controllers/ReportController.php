@@ -12,15 +12,12 @@ class ReportController extends Controller
     {
         $hidden = $request->hidden ? true : false;
         $report = Report::query();
-
         
-        $report
-        ->where('company_id', $company->id)
-        ->where('level', $level)
-        ->where('type', $type)
-        ->where('year', $year)
-        ->where('section', $section);
-        ;
+        $report->where('company_id', $company->id);
+        $report->where('level', $level);
+        $report->where('type', $type);
+        $report->where('year', $year);
+        $report->where('section', $section);
         // if(!$hidden){
         //     $report->where('is_hidden', false);
         // }
@@ -38,9 +35,26 @@ class ReportController extends Controller
         //     }
         // });
 
-        $report
-            ->orderBy('row');
+        $report->orderBy('row');
 
-        return $report->get();
+        $rows = $report->get();
+
+        if($type == 'income'){
+            $ebit = Report::query();
+            $ebit->where('company_id', $company->id);
+            $ebit->where('level', $level);
+            $ebit->where('type','ebit');
+            $ebit->where('year', $year);
+            $ebit->where('section', $section);
+            $ebit->orderBy('row');
+
+            $ebits = $ebit->get();
+            $rows = $rows->merge($ebits);
+        }
+
+
+
+
+        return $rows;
     }
 }

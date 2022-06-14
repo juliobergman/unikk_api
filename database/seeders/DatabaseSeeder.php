@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Http\Controllers\ExtractIncomeController;
+use App\Models\Company;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
 
@@ -32,7 +34,49 @@ class DatabaseSeeder extends Seeder
             // CategorySeeder::class,
             CategoryIncomeSeeder::class,
             CategoryBalanceSeeder::class,
-            // FactSeeder::class,
+            FactSeeder::class,
+            FormulaSeeder::class,
         ]);
+
+        $company = Company::where('company_id', 1)->first();
+
+        $reports = [
+            [
+                'income',
+                '2022',
+                'actual',
+            ],
+            [
+                'income',
+                '2022',
+                'forecast',
+            ],
+            [
+                'income',
+                '2021',
+                'actual',
+            ],
+            [
+                'balance',
+                '2022',
+                'actual',
+            ],
+            [
+                'balance',
+                '2022',
+                'forecast',
+            ],
+            [
+                'balance',
+                '2021',
+                'actual',
+            ],
+        ];
+
+        foreach ($reports as $rep) {
+            (new ExtractIncomeController)->index($company, $rep[0],$rep[1],$rep[2],);
+        }
+
+
     }
 }

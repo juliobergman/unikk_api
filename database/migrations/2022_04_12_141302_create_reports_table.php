@@ -21,7 +21,7 @@ class CreateReportsTable extends Migration
             $table->foreignId('company_id')->foreign('company_id')->references('id')->on('companies');
             $table->unsignedBigInteger('group_id')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
-            $table->enum('type', ['income', 'balance', 'ratio']);
+            $table->enum('type', ['income', 'balance', 'ratio','ebit']);
             $table->unsignedBigInteger('year');
             $table->unsignedBigInteger('depth')->index();
             $table->unsignedBigInteger('level')->index();

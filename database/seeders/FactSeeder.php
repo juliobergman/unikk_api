@@ -2,9 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
+use App\Models\DateDimension;
 use App\Models\Fact;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Factories\Sequence;
+use Illuminate\Support\Facades\Date;
 
 class FactSeeder extends Seeder
 {
@@ -15,32 +19,34 @@ class FactSeeder extends Seeder
      */
     public function run()
     {
-        
-        
+        $facts = [];
 
-        Fact::factory(20)
-        ->state(new Sequence(
-            ['category_id' => 39],
-            ['category_id' => 40],
-            ['category_id' => 41],
-            ['category_id' => 42],
-            ['category_id' => 43],
-            ['category_id' => 44],
-            ['category_id' => 45],
-            ['category_id' => 46],
-            ['category_id' => 47],
-            ['category_id' => 48],
-        ))
-        ->state(new Sequence(
-            ['section' => 'actual'],
-            ['section' => 'forecast'],
-            ['section' => 'forecast'],
-            ['section' => 'actual'],
-        ))
-        // ->state(new Sequence(
-        //     ['company_id' => 1],
-        //     ['company_id' => 2],
-        // ))
-        ->create();
+        $categories = Category::where('company_id', 1)->whereNotNull('account')->get();
+
+        foreach ($categories as $key => $value) {
+            $facts[] = [
+                'section' => 'actual',
+                'date' => '2022-01-01',
+                'category_id' => $value->id,
+                'company_id' => '1',
+                'amount' => rand(-500,500),
+            ];
+            $facts[] = [
+                'section' => 'forecast',
+                'date' => '2022-01-01',
+                'category_id' => $value->id,
+                'company_id' => '1',
+                'amount' => rand(-500,500),
+            ];
+            $facts[] = [
+                'section' => 'actual',
+                'date' => '2021-01-01',
+                'category_id' => $value->id,
+                'company_id' => '1',
+                'amount' => rand(-500,500),
+            ];
+        }
+
+        DB::table('facts')->insert($facts);
     }
 }

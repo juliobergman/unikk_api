@@ -72,7 +72,7 @@ class ExtractController extends Controller
         // 'date_dimensions.dow_in_month',
     ];
 
-    protected function getCategories($request, $company, $type, $year, $section, $group, $depth = 0)
+    protected function getCategories($company, $type, $year, $section, $group, $depth = 0)
     {   
         $schema = Category::query();
         $schema->where('company_id', $company->id);
@@ -129,6 +129,9 @@ class ExtractController extends Controller
     {
 
         // return $data;
+        // if($class == "header-row"){
+        //     dd($data);
+        // }
         
         if($class){
             $css = $class;

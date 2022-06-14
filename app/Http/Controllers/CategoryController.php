@@ -16,6 +16,10 @@ class CategoryController extends Controller
     {
         return Category::where('company_id', $company->id)->get();
     }
+    public function grouped(Request $request, Company $company)
+    {
+        return Category::where('company_id', $company->id)->get()->groupBy('type');
+    }
     
     public function show($id)
     {   
