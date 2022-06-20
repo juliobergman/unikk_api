@@ -4,9 +4,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FactController;
+use App\Http\Controllers\FormulaLanding;
 use App\Http\Controllers\PeccController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ChartController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\ReportController;
@@ -19,7 +21,6 @@ use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\DateDimensionController;
 use App\Http\Controllers\ExtractIncomeController;
-use App\Http\Controllers\FormulaLanding;
 
 /*
 |--------------------------------------------------------------------------
@@ -179,6 +180,13 @@ Route::middleware('auth:sanctum')->prefix('/formula')->group(function(){
     Route::get('/{company}/ebit/{year}/{section}', [FormulaLanding::class, 'ebit']);
     Route::get('/{company}/ratio/{year}/{section}', [FormulaLanding::class, 'ratio']);
     Route::post('/store', [FormulaLanding::class, 'store']);
+});
+
+// Chart
+Route::middleware('auth:sanctum')->prefix('/chart')->group(function(){
+    Route::get('/data/{company}/{year}', [ChartController::class, 'index']);
+    Route::get('/fields/{company}', [ChartController::class, 'fields']);
+    Route::get('/sparklines/{company}/{year}', [ChartController::class, 'sparklines']);
 });
 
 

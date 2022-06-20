@@ -20,6 +20,8 @@ class FormulaLanding extends FormulaExtract
             $formulas[$formula->identifier] = $formula;
         }
 
+        // return $formulas;
+
         $groups = Group::all();
 
         foreach ($groups as $value) {
@@ -54,6 +56,7 @@ class FormulaLanding extends FormulaExtract
                 'group_id' => $value['group_id'],
                 'category_id' => $value['id'],
                 'identifier' => $key,
+                'table' => 'category',
                 'category_name' => $value['name'],
                 'group_name' => $value['group_name'],
             ];
@@ -70,6 +73,7 @@ class FormulaLanding extends FormulaExtract
             'group_id',
             'category_id',
             // 'identifier',
+            'table',
             'category_name',
             'group_name',
         ];
@@ -96,7 +100,7 @@ class FormulaLanding extends FormulaExtract
         // return $update;
 
         $chunks = collect($rows)->chunk(10);
-
+        $inserts = [];
         // Using chunks insert the data
         foreach ($chunks as $chunk) {
             $inserts[] = Report::upsert($chunk->toArray(), $unique, $update);
@@ -323,6 +327,9 @@ class FormulaLanding extends FormulaExtract
         // return $data;
         // return $rows[16];
         // return $rows;
+
+        (new ChartController)->fields($company);
+        
         return $this->insert($rows);
     }
 

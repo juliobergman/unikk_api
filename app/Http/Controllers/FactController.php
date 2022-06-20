@@ -102,6 +102,8 @@ class FactController extends Controller
         }]);
         
         
+        $categories->orderBy('sort', 'asc');
+        $categories->orderBy('account', 'asc');
         // $categories->take(10);
         // return $categories->get()->pluck('id');
         $data = $categories->get();
@@ -124,7 +126,7 @@ class FactController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'company_id' => ['exists:companies'],
+            // 'company_id' => ['exists:companies'],
             'type' => ['required'],
             'year' => ['required'],
             'section' => ['required'],

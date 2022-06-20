@@ -164,7 +164,7 @@ class FormulaExtract extends FormulaController
             'name' => 'Net Income (%)',
             'account' => null,
             'group_name' => null,
-            'format' => 'currency',
+            'format' => 'percentage',
             'row_class' => 'data-row',
             'is_hidden' => false,
             'required' => true,

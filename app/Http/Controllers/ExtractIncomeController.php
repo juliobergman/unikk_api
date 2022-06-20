@@ -59,6 +59,7 @@ class ExtractIncomeController extends ExtractController
             'year'
         ];
         $update = [
+            'row',
             'category_id',
             'jan',
             'feb',
