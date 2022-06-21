@@ -132,9 +132,7 @@ Route::middleware('auth:sanctum')->prefix('/contact')->group(function(){
 
 // Financial Routes
 // Group
-Route::middleware('auth:sanctum')->prefix('/group')->group(function(){
-    Route::get('/', [GroupController::class, 'index']);
-});
+Route::middleware('auth:sanctum')->get('/group', [GroupController::class, 'index']);
 
 // Category
 Route::middleware('auth:sanctum')->prefix('/category')->group(function(){
@@ -144,7 +142,7 @@ Route::middleware('auth:sanctum')->prefix('/category')->group(function(){
     Route::put('/update/{category}', [CategoryController::class, 'update']);
     Route::delete('/destroy/{id}', [CategoryController::class, 'destroy']);
     Route::get('/{company}/all', [CategoryController::class, 'index']);
-    Route::get('/{company}/grouped', [CategoryController::class, 'grouped']);
+    // Route::get('/{company}/grouped', [CategoryController::class, 'grouped']);
     Route::get('/{company}/group/{type}', [CategoryController::class, 'groups']);
     Route::get('/{company}/parentable', [CategoryController::class, 'parentable']);
     Route::get('/{company}/leaves/{type}', [CategoryController::class, 'leaves']);

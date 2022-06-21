@@ -34,7 +34,7 @@ class CreateCategoriesTable extends Migration
 
             $table->unsignedBigInteger('sort')->nullable();
 
-            // $table->unique(['account','company_id'], 'unique_account');
+            $table->unique(['account','company_id'], 'unique_account');
             // $table->unique(['name','company_id', 'parent_id'], 'unique_child');
 
             $table->softDeletes();

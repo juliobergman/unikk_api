@@ -53,6 +53,12 @@ class CategoryController extends Controller
             // 'sort' => 'required',
         ]);
 
+        if($request->id != null){
+            $category = Category::where('id', $request->id)->first();
+            // return $category;
+            return $this->update($request, $category);
+        }
+
         $category = [
             'name' => $request->name,
             'format' => $request->format,
@@ -190,10 +196,10 @@ class CategoryController extends Controller
     public function parentable(Request $request, Company $company)
     {
         $categories = Category::query();
-        $categories->where('company_id', $company->id);
         $categories->tree();
-        $categories->hasChildren();
-        return $categories->get();
+        $categories->where('company_id', $company->id);
+        $categories->where('depth', '!=', 2);
+        return $categories->get()->groupBy('group_id');
     }
     public function leaves(Request $request, Company $company, $type)
     {   
