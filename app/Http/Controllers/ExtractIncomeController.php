@@ -83,7 +83,7 @@ class ExtractIncomeController extends ExtractController
         ];
 
         $chunks = collect($data)->chunk(10);
-
+        $inserts = [];
         // Using chunks insert the data
         foreach ($chunks as $chunk) {
             $inserts[] = Report::upsert($chunk->toArray(), $unique, $update);

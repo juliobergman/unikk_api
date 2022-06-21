@@ -14,6 +14,7 @@ class MembershipFactory extends Factory
     public function definition()
     {
         return [
+            'company_id' => 1,
             'job_title' => $this->faker->jobTitle(),
         ];
     }

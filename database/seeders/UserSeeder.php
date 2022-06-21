@@ -34,10 +34,10 @@ class UserSeeder extends Seeder
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ])
         ->has(UserData::factory()->state([
-            'profile_pic' => '/storage/factory/avatar/male/avatar-10.jpg',
+            'profile_pic' => '/storage/factory/avatar/misc/avatar-unikk.jpg',
             'country' => 'CH',
         ]))
-        ->has(Contact::factory(10)
+        ->has(Contact::factory(5)
         ->state(new Sequence(
             ['profile_pic' => '/storage/factory/avatar/male/avatar-1.jpg'],
             ['profile_pic' => '/storage/factory/avatar/female/avatar-1.jpg'],
@@ -61,22 +61,15 @@ class UserSeeder extends Seeder
             ['profile_pic' => '/storage/factory/avatar/female/avatar-10.jpg'],
         ))
         )
-        ->has(Membership::factory(2)->state(new Sequence(
-            [
-                'company_id' => 1,
-                'job_title' => 'Developer',
-                'role' => 'admin',
-            ],
-            [
-                'company_id' => 2,
-                'job_title' => 'Designer',
-                'role' => 'admin',
-            ]
-        ))
+        ->has(Membership::factory(1)->state([
+            'company_id' => 1,
+            'job_title' => 'Management',
+            'role' => 'admin',
+        ])
         )
         ->create();
 
-        User::factory(20)
+        User::factory(6)
         ->state([
             'email_verified_at' => now()
         ])
@@ -113,20 +106,12 @@ class UserSeeder extends Seeder
         ->has(
             Membership::factory(1)
             ->state(new Sequence(
-                ['company_id' => 1],
-                ['company_id' => 2],
-            ))
-            ->state(new Sequence(
                 ['role' => 'user'],
                 ['role' => 'editor'],
                 ['role' => 'admin'],
             ))
         )
-        ->has(Contact::factory(7)->state(new Sequence(
-            ['public' => null],
-            ['public' => 1],
-            ['public' => 2],
-        )))
+
         ->create();
     }
 }
